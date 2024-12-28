@@ -47,9 +47,9 @@ Create a config file that suits your machine:
     cd ./config/user
     cp abizeul_biomed.yaml myusername_mymachine.yaml
 
-Adjust the paths to point to the directory you would like to use for storage of results and for fetching the data
+Adjust the paths in ```myusername_mymachine.yaml``` to point to the directory you would like to use for storage of results and for fetching the data
 
-## Launch
+## Launch Training
 To launch experiments, you can find training and evaluation scripts in  ```scripts```. The following modifications should be made to these script to ensure a smooth training on your local machine:
 
     EXPERIMENT="mae_clevr"
@@ -57,7 +57,7 @@ To launch experiments, you can find training and evaluation scripts in  ```scrip
 
 The ```EXPERIMENT``` variable refers the experimental setting defined in ```./config/experiment/```. 
 
-### Evaluation on linear probing
+### Launch Evaluation
 To evaluate a checkpoint, you can gain inspiration from ```./config/user/callen_euler.yaml``` where I stored my runs. Then the following command gives an overview of how to launch the evaluation
 
     EXPERIMENT="mae_clevr"
