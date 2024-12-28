@@ -1,0 +1,28 @@
+# @package _global_
+
+defaults:
+  - override /checkpoint: pretrained
+  - override /transformations: mae
+
+trainer:
+  max_epochs: 0
+
+evaluator:
+  max_epochs: 100
+
+pl_module_eval:
+  _target_: model.module_mlp.ViTMAE_mlp
+  base_learning_rate: 0.1
+  betas: 0.9
+  weight_decay: 0
+  optimizer_name: sgd
+  warmup: 10
+  learning_rate: ${compute_lr:${pl_module_eval.base_learning_rate},${datamodule_eval.batch_size}}
+  eval_type: ${data.eval_type}
+  eval_fn: ${data.eval_fn}
+  evaluated_epoch: ${evaluated_epoch}
+
+# overriding so that we get where we were if only just evaluating a run
+logs_dir: ${base_logs_dir}/${checkpoint.run_path}
+local_dir: ${base_outputs_dir}/${checkpoint.run_path}
+evaluated_epoch: ${checkpoint.epoch}

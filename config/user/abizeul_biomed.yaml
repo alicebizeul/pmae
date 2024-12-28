@@ -1,0 +1,4 @@
+# @package _global_
+
+base_logs_home: /cluster/work/vogtlab/Group/abizeul/mae
+base_data_home: /cluster/work/vogtlab/Group/abizeul/data

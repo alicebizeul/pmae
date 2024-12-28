@@ -1,0 +1,74 @@
+# @package _global_
+
+data:
+  name: tinyimagenet
+  resolution: 64
+  channels: 3
+  height: ${data.resolution}
+  width: ${data.resolution}
+  patch_size: 8
+  batch_size: 512
+  eval_fn: 
+    _target_: torch.nn.CrossEntropyLoss
+    reduction: mean
+  eval_logit_fn:
+    _target_: torch.nn.Softmax
+    dim: -1
+  eval_type: multiclass
+  str_patch_size: ${convert_str:${data.patch_size}}
+  mean: 
+    _target_: torch.tensor
+    data: 
+      _target_: numpy.load
+      file: ${datasets.train.root}/mean_reshaped.npy
+  std: 
+    _target_: torch.tensor
+    data: 
+      _target_: numpy.load
+      file: ${datasets.train.root}/std_reshaped.npy
+  classes: 200
+  task: 1
+
+datasets:
+  train:
+    _target_: torchvision.datasets.ImageFolder
+    root: ${base_data_home}/tiny-imagenet-200/train
+    transform: ${transformation.train}
+
+  val:
+    _target_: torchvision.datasets.ImageFolder
+    root: ${base_data_home}/tiny-imagenet-200/val
+    transform: ${transformation.val}
+
+  test:
+    _target_: torchvision.datasets.ImageFolder
+    root: ${base_data_home}/tiny-imagenet-200/val
+    transform: ${transformation.val}
+
+datamodule: 
+  _target_: dataset.dataloader.DataModule
+  batch_size: ${data.batch_size}
+  num_workers: 8
+  classes: ${data.classes}
+  channels: ${data.channels}
+  resolution: ${data.resolution}
+  name: ${data.name}
+
+datamodule_eval:
+  _target_: dataset.dataloader.DataModule
+  batch_size: ${data.batch_size}
+  num_workers: ${datamodule.num_workers}
+  classes: ${data.classes}
+  channels: ${data.channels}
+  resolution: ${data.resolution}
+  name: ${data.name}
+
+
+extradata:
+  pcamodule:
+    _target_ : numpy.load
+    file: ${base_data_home}/tiny-imagenet-200/train/pc_matrix.npy
+
+  eigenratiomodule:
+    _target_: numpy.load
+    file: ${base_data_home}/tiny-imagenet-200/train/eigenvalues_ratio.npy

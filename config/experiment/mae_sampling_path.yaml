@@ -1,0 +1,6 @@
+# @package _global_
+
+defaults:
+  - override /dataset: pathmnist
+  - override /model: vit-t
+  - override /masking: mae_sampling

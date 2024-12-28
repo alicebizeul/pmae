@@ -1,0 +1,10 @@
+# @package _global_
+
+masking:
+  type: segmentation
+  strategy: random
+  pc_ratio: 0.0
+  pixel_ratio: 0.75
+  ratio:  ${decimal_2_percent:${masking.pixel_ratio}}
+  str_ratio: ${convert_str:${masking.ratio}}
+

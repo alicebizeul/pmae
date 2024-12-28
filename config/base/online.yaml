@@ -1,0 +1,39 @@
+# @package _global_
+seed: 0
+download: True
+
+hydra/job_logging: colorlog
+hydra/hydra_logging: colorlog
+
+base_logs_dir: ${base_logs_home}/logs/${oc.env:USER}
+base_outputs_dir: ${base_logs_home}/outputs/${oc.env:USER}
+run_tag: debug
+logs_dir: ${base_logs_dir}/${project}/${run_tag}/${now:%Y-%m-%d_%H-%M-%S}
+local_dir: ${base_outputs_dir}/${run_tag}/${now:%Y-%m-%d_%H-%M-%S}
+checkpoint_dir: ${logs_dir}/checkpoints
+
+wandb_dir: ${base_logs_home}/wandb
+wandb_datadir : ${base_logs_home}/wandb/artifacts
+wandb_cachedir: ${base_logs_home}/.cache/wandb
+wandb_configdir: ${base_logs_home}/.config/wandb
+
+wandb:
+  project: ${project}
+  notes: null
+  tags: ${run_tag}
+  log_model: True
+  save_code: True
+  reinit: True
+  offline: False
+  # group multi-node runs
+  group: ${trainer.strategy}
+
+hydra:
+  job:
+    # when exceuting a job change to the logs_dir
+    chdir: True
+  run:
+    dir: ${logs_dir}
+  sweep:
+    dir: ${logs_dir}
+

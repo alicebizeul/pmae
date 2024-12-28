@@ -1,0 +1,7 @@
+# @package _global_
+
+defaults:
+  - override /dataset: clevr
+  - override /model: vit-t
+  - override /masking: pc_pcsampling
+

@@ -1,0 +1,622 @@
+# @package _global_
+
+base_logs_home: /cluster/project/sachan/callen/mae_alice
+base_data_home: /cluster/project/sachan/callen/data_alice
+
+checkpoint_folders:
+  vit-t:
+    tinyimagenet:
+      pixel:
+        pixel:
+          _50:
+            _8: mae_tiny_pc_0.0_pixel_0.5/2024-08-27_19-14-37
+          _60:
+            _8: mae_tiny_pc_0.0_pixel_0.6/2024-08-27_19-14-37
+          _75:
+            _8: mae_tiny_pc_0.0_pixel_0.75/2024-08-27_19-14-36
+            _16: mae_tiny_pc_0.0_pixel_0.75_patch_16/2024-08-29_11-42-12
+          _80:
+            _8: mae_tiny_pc_0.0_pixel_0.8/2024-08-27_19-14-36
+          _90: 
+            _8: mae_tiny_pc_0.0_pixel_0.9/2024-08-27_19-14-36
+        sampling:
+          _None: 
+            _8: mae_sampling_tiny/2024-09-24_08-25-21 #mae_sampling_tiny_pc_0.0_pixel_0.0/2024-09-15_17-49-29
+      pc:
+        bvt:
+          _60: 
+            _8: pcmae_tiny_bvt_pc_tvb_0.6_pixel_0.0/2024-09-02_21-08-48
+          _70:
+            _8: pcmae_tiny_bvt_pc_tvb_0.7_pixel_0.0/2024-09-02_21-08-48
+          _80: 
+            _8: pcmae_tiny_bvt_pc_tvb_0.8_pixel_0.0/2024-09-02_21-08-48
+          _85: 
+            _8: 
+          _90:
+            _8: pcmae_tiny_bvt_pc_tvb_0.9_pixel_0.0/2024-09-02_21-26-18
+        tvb:
+          _70:
+            _8: pcmae_tiny_tvb_pc_tvb_0.7_pixel_0.0/2024-09-02_18-17-06
+          _80: 
+            _8: pcmae_tiny_tvb_pc_tvb_0.8_pixel_0.0/2024-09-02_18-17-06
+          _85: 
+            _8: pcmae_tiny_tvb_pc_tvb_0.85_pixel_0.0/2024-09-02_18-17-06
+          _90:
+            _8: 
+        pc:
+          _10:
+            _8: pcmae_tiny_pc_pc_tvb_0.1/2024-09-26_16-23-14
+          _20:
+            _8: pcmae_tiny_pc_pc_tvb_0.2/2024-09-26_16-23-14
+          _30:
+            _8: pcmae_tiny_pc_pc_tvb_0.3/2024-09-26_16-23-14
+          _40:
+            _8: pcmae_tiny_pc_pc_tvb_0.4/2024-09-26_16-23-14
+          _50:
+            _8: pcmae_tiny_pc_pc_tvb_0.5/2024-09-26_16-23-14
+          _60:
+            _8: pcmae_tiny_pc_pc_tvb_0.6/2024-09-26_16-23-14
+          _70:
+            _8: pcmae_tiny_pc_pc_tvb_0.7/2024-09-26_19-47-16
+          _80:
+            _8: pcmae_tiny_pc_pc_tvb_0.8/2024-09-26_20-34-04
+          _90:
+            _8: pcmae_tiny_pc_pc_tvb_0.9/2024-09-26_20-34-04
+        sampling_pc:
+          _None: 
+            _8: pcmae_tiny_pcsampling/2024-09-26_14-21-28 #pcmae_tiny_pcsampling_pc_0.0_pixel_0.0/2024-09-15_09-00-49
+        sampling_ratio:
+          _None: 
+            _8: pcmae_tiny_ratiosampling_pc_0.0_pixel_0.0/2024-09-15_09-00-49
+        sampling_pc_block:
+          _None:
+            _8: pcmae_tiny_pcsampling_block/2024-09-24_11-10-40
+    clevr:
+      pixel:
+        pixel:
+          _50:
+            _16: mae_clevr_pixel_0.5/2024-09-28_16-32-55
+          _60:
+            _16: mae_clevr_pixel_0.6/2024-09-28_16-32-55
+          _75:
+            _16: mae_clevr_pixel_0.75/2024-09-28_16-32-55
+          _80:
+            _16: mae_clevr_pixel_0.8/2024-09-28_16-32-55
+          _90: 
+            _16: mae_clevr_pixel_0.9/2024-09-28_16-32-55
+      pc:
+        pc:
+          _10:
+            _16: 
+          _20:
+            _16: 
+          _30:
+            _16: 
+      segmentation:
+        complete:
+          _0:
+            _16: mae_clevr_segmentation_complete/2024-09-28_16-35-20
+        partial:
+          _50:
+            _16: mae_clevr_segmentation_partial_pixel_0.5/2024-09-29_14-39-54
+          _60:
+            _16: mae_clevr_segmentation_partial_pixel_0.6/2024-09-29_14-45-44
+          _70:
+            _16: mae_clevr_segmentation_partial_pixel_0.7/2024-09-29_15-16-22
+          _80:
+            _16: mae_clevr_segmentation_partial_pixel_0.8/2024-09-29_18-26-16
+          _90:
+            _16: 
+        random:
+          _50: 
+            _16: mae_clevr_segmentation_random_pixel_0.5/2024-09-29_10-56-52
+          _60:
+            _16: mae_clevr_segmentation_random_pixel_0.6/2024-09-29_11-37-44
+          _70:
+            _16: mae_clevr_segmentation_random_pixel_0.7/2024-09-29_13-24-57
+          _80:
+            _16: mae_clevr_segmentation_random_pixel_0.8/2024-09-29_14-30-46
+          _90:
+            _16: mae_clevr_segmentation_random_pixel_0.9/2024-09-29_14-30-18
+    cifar10: 
+      pixel:
+        pixel:
+          _50:
+            _8: mae_cifar10_pc_0.0_pixel_0.5/2024-08-27_19-14-36
+          _60:
+            _8: mae_cifar10_pc_0.0_pixel_0.6/2024-08-27_19-14-36
+          _75:
+            _8: mae_cifar10_pc_0.0_pixel_0.75/2024-08-27_19-14-37
+            _16: mae_cifar10_pc_0.0_pixel_0.75_patch_16/2024-08-30_14-23-57
+          _80:
+            _8: mae_cifar10_pc_0.0_pixel_0.8/2024-08-27_19-14-37
+          _90: 
+            _8: mae_cifar10_pc_0.0_pixel_0.9/2024-08-27_19-14-37
+        sampling:
+          _None: 
+            _8: mae_sampling_cifar10/2024-09-25_19-25-28 #mae_sampling_cifar10_pc_0.0_pixel_0.0/2024-09-15_17-50-13 (0.5-0.9 range)
+      pc:
+        pc:
+          _10:
+            _8: pcmae_cifar10_pc_pc_tvb_0.1/2024-09-26_08-47-13
+          _20:
+            _8: pcmae_cifar10_pc_pc_tvb_0.2/2024-09-26_08-47-17
+          _30:
+            _8: pcmae_cifar10_pc_pc_tvb_0.3/2024-09-26_08-47-17
+          _40:
+            _8: pcmae_cifar10_pc_pc_tvb_0.4/2024-09-26_08-47-17
+          _50:
+            _8: pcmae_cifar10_pc_pc_tvb_0.5/2024-09-26_08-47-17
+          _60:
+            _8: pcmae_cifar10_pc_pc_tvb_0.6/2024-09-26_08-47-17
+          _70:
+            _8: pcmae_cifar10_pc_pc_tvb_0.7/2024-09-26_08-47-17
+          _80:
+            _8: pcmae_cifar10_pc_pc_tvb_0.8/2024-09-26_08-47-17
+          _90:
+            _8: pcmae_cifar10_pc_pc_tvb_0.9/2024-09-26_08-47-12
+        tvb:
+          _10:
+            _8: pcmae_cifar10_tvb_pc_tvb_0.1/2024-09-22_22-12-23
+          _20:
+            _8: pcmae_cifar10_tvb_pc_tvb_0.2/2024-09-22_22-12-23
+          _30: 
+            _8: pcmae_cifar10_tvb_pc_tvb_0.3/2024-09-22_22-12-23
+          _40:
+            _8: pcmae_cifar10_tvb_pc_tvb_0.4/2024-09-22_22-12-23
+          _50:
+            _8: pcmae_cifar10_tvb_pc_tvb_0.5/2024-09-22_22-12-22
+          _60: 
+            _8: pcmae_cifar10_tvb_pc_tvb_0.6_pixel_0.0/2024-09-02_18-37-50
+          _70:
+            _8: pcmae_cifar10_tvb_pc_tvb_0.7_pixel_0.0/2024-09-02_18-37-50
+          _80: 
+            _8: pcmae_cifar10_tvb_pc_tvb_0.8_pixel_0.0/2024-09-02_19-42-01
+          _85: 
+            _8: pcmae_cifar10_tvb_pc_tvb_0.85_pixel_0.0/2024-09-02_19-42-26
+          _90:
+            _8: pcmae_cifar10_tvb_pc_tvb_0.9_pixel_0.0/2024-09-02_19-42-26
+        bvt:
+          _10:
+            _8: pcmae_cifar10_bvt_pc_tvb_0.1/2024-09-22_22-12-22
+          _20:
+            _8: pcmae_cifar10_bvt_pc_tvb_0.2/2024-09-22_22-12-52
+          _30: 
+            _8: pcmae_cifar10_bvt_pc_tvb_0.3/2024-09-22_22-12-52
+          _40:
+            _8: pcmae_cifar10_bvt_pc_tvb_0.4/2024-09-22_22-12-52
+          _50:
+            _8: pcmae_cifar10_bvt_pc_tvb_0.5/2024-09-22_22-12-52
+          _60:
+            _8: pcmae_cifar10_bvt_pc_tvb_0.6_pixel_0.0/2024-09-02_21-54-02
+          _70:
+            _8: pcmae_cifar10_bvt_pc_tvb_0.7_pixel_0.0/2024-09-02_21-54-02
+          _80: 
+            _8: pcmae_cifar10_bvt_pc_tvb_0.8_pixel_0.0/2024-09-02_22-00-51
+          _85: 
+            _8: pcmae_cifar10_bvt_pc_tvb_0.85_pixel_0.0/2024-09-02_22-01-58
+          _90:
+            _8: pcmae_cifar10_bvt_pc_tvb_0.9_pixel_0.0/2024-09-02_22-07-00
+        sampling_pc:
+          _None: 
+            _8: pcmae_cifar10_pcsampling/2024-09-26_00-27-58 #pcmae_cifar10_pcsampling_pc_0.0_pixel_0.0/2024-09-10_21-43-36
+        sampling_ratio:
+          _None: 
+            _8: pcmae_cifar10_ratiosampling_pc_0.0_pixel_0.0/2024-09-08_16-03-37
+        sampling_pc_block:
+          _None:
+            _8: pcmae_cifar10_pcsampling_block/2024-09-24_11-10-41
+    bloodmnist:
+      pixel:
+        pixel:
+          _50:
+            _8: mae_blood_pc_0.0_pixel_0.5/2024-08-27_19-14-36
+          _60:
+            _8: mae_blood_pc_0.0_pixel_0.6/2024-08-27_19-14-36
+          _75:
+            _8: mae_blood_pc_0.0_pixel_0.75/2024-08-27_19-14-36
+            _16: mae_blood_pc_0.0_pixel_0.75_patch_16/2024-08-29_11-42-12
+          _80:
+            _8: mae_blood_pc_0.0_pixel_0.8/2024-08-27_19-14-38
+          _90: 
+            _8: mae_blood_pc_0.0_pixel_0.9/2024-08-27_19-14-49
+        sampling:
+          _None:
+            _8: mae_sampling_blood/2024-09-23_19-22-33 #mae_sampling_blood_pc_0.0_pixel_0.0/2024-09-15_17-49-36  (0.5,0.9) range
+      pc:
+        pc:
+          _10:
+            _8: pcmae_blood_pc_pc_tvb_0.1/2024-09-26_08-46-34
+          _20:
+            _8: pcmae_blood_pc_pc_tvb_0.2/2024-09-26_08-47-13
+          _30:
+            _8: pcmae_blood_pc_pc_tvb_0.3/2024-09-26_08-47-13
+          _40:
+            _8: pcmae_blood_pc_pc_tvb_0.4/2024-09-26_08-47-13
+          _50:
+            _8: pcmae_blood_pc_pc_tvb_0.5/2024-09-26_08-46-34
+          _60:
+            _8: pcmae_blood_pc_pc_tvb_0.6/2024-09-26_08-46-34
+          _70:
+            _8: pcmae_blood_pc_pc_tvb_0.7/2024-09-26_08-46-34
+          _80:
+            _8: pcmae_blood_pc_pc_tvb_0.8/2024-09-26_08-46-34
+          _90:
+            _8: pcmae_blood_pc_pc_tvb_0.9/2024-09-26_08-47-13
+        tvb:
+          _10:
+            _8: pcmae_blood_bvt_pc_tvb_0.1/2024-09-22_22-12-06
+          _20:
+            _8: pcmae_blood_bvt_pc_tvb_0.2/2024-09-22_22-12-23
+          _30:
+            _8: pcmae_blood_bvt_pc_tvb_0.3/2024-09-22_22-12-23
+          _40:
+            _8: pcmae_blood_bvt_pc_tvb_0.4/2024-09-22_22-12-19
+          _50:
+            _8: pcmae_blood_bvt_pc_tvb_0.5/2024-09-22_22-12-19
+          _60: 
+            _8: pcmae_blood_tvb_pc_tvb_0.6/2024-09-20_19-42-25
+          _70:
+            _8: pcmae_blood_tvb_pc_tvb_0.7/2024-09-20_19-42-28
+          _80: 
+            _8: pcmae_blood_tvb_pc_tvb_0.8/2024-09-20_19-42-28
+          _85: 
+            _8: pcmae_blood_tvb_pc_tvb_0.85/2024-09-20_19-42-10
+          _90:
+            _8: pcmae_blood_tvb_pc_tvb_0.9/2024-09-20_19-42-10
+        bvt:
+          _10:
+            _8: pcmae_blood_bvt_pc_tvb_0.1/2024-09-22_22-12-06
+          _20:
+            _8: pcmae_blood_bvt_pc_tvb_0.2/2024-09-22_22-12-23
+          _30:
+            _8: pcmae_blood_bvt_pc_tvb_0.3/2024-09-22_22-12-23
+          _40:
+            _8: pcmae_blood_bvt_pc_tvb_0.4/2024-09-22_22-12-19
+          _50:
+            _8: pcmae_blood_bvt_pc_tvb_0.5/2024-09-22_22-12-19
+          _60:
+            _8: pcmae_blood_bvt_pc_tvb_0.6/2024-09-20_19-42-10
+          _70:
+            _8: pcmae_blood_bvt_pc_tvb_0.7/2024-09-20_19-42-10
+          _80: 
+            _8: pcmae_blood_bvt_pc_tvb_0.8/2024-09-20_19-42-26
+          _85: 
+            _8: pcmae_blood_bvt_pc_tvb_0.85/2024-09-20_19-42-26
+          _90:
+            _8: pcmae_blood_bvt_pc_tvb_0.9/2024-09-20_19-42-27
+        sampling_pc:
+          _None: 
+            _8: pcmae_blood_pcsampling/2024-09-26_01-53-32 #pcmae_blood_pcsampling_pc_0.0_pixel_0.0/2024-09-08_16-03-37
+        sampling_ratio:
+          _None: 
+            _8: pcmae_blood_ratiosampling_pc_0.0_pixel_0.0/2024-09-08_16-03-46
+        sampling_pc_block:
+          _None:
+            _8: pcmae_blood_pcsampling_block/2024-09-24_11-10-41
+    dermamnist: 
+      pixel:
+        pixel:
+          _50:
+            _8: mae_derma_pc_0.0_pixel_0.5/2024-08-27_19-15-15
+          _60:
+            _8: mae_derma_pc_0.0_pixel_0.6/2024-08-27_19-15-15
+          _75:
+            _8: mae_derma_pc_0.0_pixel_0.75/2024-08-27_19-14-57
+            _16: mae_derma_pc_0.0_pixel_0.75_patch_16/2024-08-29_11-42-12
+          _80:
+            _8: mae_derma_pc_0.0_pixel_0.8/2024-08-27_19-14-57
+          _90: 
+            _8: mae_derma_pc_0.0_pixel_0.9/2024-08-27_19-14-55
+        sampling:
+          _None: 
+            _8: mae_sampling_derma/2024-09-23_19-22-34 #mae_sampling_derma_pc_0.0_pixel_0.0/2024-09-15_17-49-36 (0.5,0.9) range
+      pc:
+        pc:
+          _10:
+            _8: pcmae_derma_pc_pc_tvb_0.1/2024-09-26_08-47-12
+          _20:
+            _8: pcmae_derma_pc_pc_tvb_0.2/2024-09-26_08-47-12
+          _30:
+            _8: pcmae_derma_pc_pc_tvb_0.3/2024-09-26_08-47-12
+          _40:
+            _8: pcmae_derma_pc_pc_tvb_0.4/2024-09-26_08-47-12
+          _50:
+            _8: pcmae_derma_pc_pc_tvb_0.5/2024-09-26_08-47-26
+          _60:
+            _8: pcmae_derma_pc_pc_tvb_0.6/2024-09-26_08-47-26
+          _70:
+            _8: pcmae_derma_pc_pc_tvb_0.7/2024-09-26_08-46-37
+          _80:
+            _8: pcmae_derma_pc_pc_tvb_0.8/2024-09-26_11-24-24
+          _90:
+            _8: pcmae_derma_pc_pc_tvb_0.9/2024-09-26_11-25-17
+        bvt:
+          _10:
+            _8: pcmae_derma_bvt_pc_tvb_0.1/2024-09-23_00-51-48
+          _20:
+            _8: pcmae_derma_bvt_pc_tvb_0.2/2024-09-23_00-52-15
+          _30: 
+            _8: pcmae_derma_bvt_pc_tvb_0.3/2024-09-23_00-52-45
+          _40:
+            _8: pcmae_derma_bvt_pc_tvb_0.4/2024-09-23_00-53-23
+          _50:
+            _8: pcmae_derma_bvt_pc_tvb_0.5/2024-09-23_00-53-54
+          _60: 
+            _8: pcmae_derma_bvt_pc_tvb_0.6_pixel_0.0/2024-09-02_23-48-15
+          _70:
+            _8: pcmae_derma_bvt_pc_tvb_0.7_pixel_0.0/2024-09-02_23-48-45
+          _80: 
+            _8: pcmae_derma_bvt_pc_tvb_0.8_pixel_0.0/2024-09-02_23-49-49
+          _85: 
+            _8: pcmae_derma_bvt_pc_tvb_0.85_pixel_0.0/2024-09-02_23-50-31
+          _90:
+            _8: pcmae_derma_bvt_pc_tvb_0.9_pixel_0.0/2024-09-03_00-31-01
+        tvb:
+          _10:
+            _8: pcmae_derma_tvb_pc_tvb_0.1/2024-09-22_22-12-42
+          _20:
+            _8: pcmae_derma_tvb_pc_tvb_0.2/2024-09-22_22-12-56
+          _30: 
+            _8: pcmae_derma_tvb_pc_tvb_0.3/2024-09-22_22-13-32
+          _40:
+            _8: pcmae_derma_tvb_pc_tvb_0.4/2024-09-22_22-13-32
+          _50:
+            _8: pcmae_derma_tvb_pc_tvb_0.5/2024-09-23_00-49-35
+          _60:
+            _8: pcmae_derma_tvb_pc_tvb_0.6_pixel_0.0/2024-09-02_21-08-48
+          _70:
+            _8: pcmae_derma_tvb_pc_tvb_0.7_pixel_0.0/2024-09-02_21-08-48
+          _80: 
+            _8: pcmae_derma_tvb_pc_tvb_0.8_pixel_0.0/2024-09-02_21-08-48
+          _85: 
+            _8: pcmae_derma_tvb_pc_tvb_0.85_pixel_0.0/2024-09-02_21-08-48
+          _90:
+            _8: pcmae_derma_tvb_pc_tvb_0.9_pixel_0.0/2024-09-02_21-08-48
+        sampling_pc:
+          _None:
+            _8: pcmae_derma_pcsampling/2024-09-26_01-56-26 #pcmae_derma_pcsampling_pc_0.0_pixel_0.0/2024-09-13_11-27-24
+        sampling_ratio:
+          _None:
+            _8: pcmae_derma_ratiosampling_pc_0.0_pixel_0.0/2024-09-13_11-27-24
+        sampling_pc_block:
+          _None:
+            _8: pcmae_derma_pcsampling_block/2024-09-24_11-10-45
+    pathmnist:
+      pixel:
+        pixel:
+          _50:
+            _8: mae_path_pc_0.0_pixel_0.5/2024-08-27_19-14-49
+          _60:
+            _8: mae_path_pc_0.0_pixel_0.6/2024-08-27_19-15-43
+          _75:
+            _8: mae_path_pc_0.0_pixel_0.75/2024-08-27_19-15-43
+            _16: mae_path_pc_0.0_pixel_0.75_patch_16/2024-08-29_11-42-12
+          _80:
+            _8: mae_path_pc_0.0_pixel_0.8/2024-08-27_19-15-43
+          _90: 
+            _8: mae_path_pc_0.0_pixel_0.9/2024-08-27_19-15-15
+        sampling:
+          _None: 
+            _8: mae_sampling_path/2024-09-24_08-25-21 # mae_sampling_path_pc_0.0_pixel_0.0/2024-09-15_17-49-36
+      pc:
+        pc:
+          _10:
+            _8: pcmae_path_pc_pc_tvb_0.1/2024-09-26_16-22-50
+          _20:
+            _8: pcmae_path_pc_pc_tvb_0.2/2024-09-26_16-22-50
+          _30:
+            _8: pcmae_path_pc_pc_tvb_0.3/2024-09-26_16-22-51
+          _40:
+            _8: pcmae_path_pc_pc_tvb_0.4/2024-09-26_16-22-51
+          _50:
+            _8: pcmae_path_pc_pc_tvb_0.5/2024-09-26_16-22-51
+          _60:
+            _8: pcmae_path_pc_pc_tvb_0.6/2024-09-26_16-23-15
+          _70:
+            _8: pcmae_path_pc_pc_tvb_0.7/2024-09-26_16-23-15
+          _80:
+            _8: pcmae_path_pc_pc_tvb_0.8/2024-09-26_16-23-15
+          _90:
+            _8: pcmae_path_pc_pc_tvb_0.9/2024-09-26_16-23-14
+        tvb:
+          _10:
+            _8:
+          _20:
+            _8:
+          _30: 
+            _8:
+          _40:
+            _8:
+          _50:
+            _8:
+          _60: 
+            _8: pcmae_path_tvb_pc_tvb_0.6_pixel_0.0/2024-09-02_20-50-51
+          _70:
+            _8: 
+          _80: 
+            _8: pcmae_path_tvb_pc_tvb_0.8_pixel_0.0/2024-09-02_20-55-19
+          _85: 
+            _8: pcmae_path_tvb_pc_tvb_0.85_pixel_0.0/2024-09-02_20-55-19
+          _90:
+            _8: pcmae_path_tvb_pc_tvb_0.9_pixel_0.0/2024-09-02_20-55-19
+        bvt:
+          _10:
+            _8:
+          _20:
+            _8:
+          _30: 
+            _8:
+          _40:
+            _8:
+          _50:
+            _8:
+          _60:
+            _8: pcmae_path_bvt_pc_tvb_0.6_pixel_0.0/2024-09-02_23-11-04
+          _70:
+            _8: pcmae_path_bvt_pc_tvb_0.7_pixel_0.0/2024-09-02_23-14-03
+          _80: 
+            _8: pcmae_path_bvt_pc_tvb_0.8_pixel_0.0/2024-09-02_23-27-17
+          _85: 
+            _8: pcmae_path_bvt_pc_tvb_0.85_pixel_0.0/2024-09-02_23-28-10
+          _90:
+            _8: pcmae_path_bvt_pc_tvb_0.9_pixel_0.0/2024-09-02_23-47-42
+        sampling_pc:
+          _None: 
+            _8: pcmae_path_pcsampling/2024-09-26_14-21-21 #pcmae_path_pcsampling_pc_0.0_pixel_0.0/2024-09-15_09-00-49
+        sampling_ratio:
+          _None: 
+            _8: pcmae_path_ratiosampling_pc_0.0_pixel_0.0/2024-09-13_11-27-24
+        sampling_pc_block:
+          _None:
+            _8: pcmae_path_pcsampling_block/2024-09-24_11-10-45
+  vit-b:
+    tinyimagenet:
+      pixel:
+        pixel:
+          _75:
+            _8: mae_tiny_pixel_0.75_model_vit-b/2024-09-27_20-52-44
+          _90: 
+            _8: mae_tiny_pixel_0.9_model_vit-b/2024-09-21_09-57-41
+        sampling:
+          _None: 
+            _8: mae_sampling_tiny_model_vit-b/2024-09-23_10-19-22
+      pc:
+        pc:
+          _10: 
+            _8:
+          _20:
+            _8:
+          _30:
+            _8:
+        bvt:
+          _60: 
+            _8: pcmae_tiny_bvt_pc_tvb_0.6_vit-b/2024-09-21_09-56-58
+        sampling_pc:
+          _None: 
+            _8: pcmae_tiny_pcsampling_model_vit-b/2024-09-21_09-57-09
+        sampling_ratio:
+          _None: 
+            _8: pcmae_tiny_ratiosampling_model_vit-b/2024-09-21_09-57-11
+        sampling_pc_block:
+          _None:
+            _8: pcmae_tiny_pcsampling_block_model_vit-b/2024-09-24_11-18-48
+    cifar10: 
+      pixel:
+        pixel:
+          _75:
+            _8: mae_cifar10_pixel_0.75_model_vit-b/2024-09-22_22-12-20
+          _80:
+            _8: mae_cifar10_pixel_0.8_model_vit-b/2024-09-21_09-57-42
+        sampling:
+          _None: 
+            _8: mae_sampling_cifar10_model_vit-b/2024-09-23_10-19-22 #mae_sampling_cifar10_model_vit-b/2024-09-21_09-56-42 (restricted range, 0.5-0.9)
+      pc:
+        tvb:
+          _90:
+            _8: pcmae_cifar10_tvb_pc_tvb_0.9_vit-b/2024-09-22_09-38-22
+        pc:
+          _5:
+            _8: pcmae_cifar10_pc_pc_tvb_0.05_model_vit-b/2024-09-29_00-10-20
+          _8:
+            _8: pcmae_cifar10_pc_pc_tvb_0.08_model_vit-b/2024-09-29_00-10-20
+          _10:
+            _8: pcmae_cifar10_pc_pc_tvb_0.1_model_vit-b/2024-09-29_00-10-19
+          _20:
+            _8: pcmae_cifar10_pc_pc_tvb_0.2_model_vit-b/2024-09-29_00-10-17
+          _30:
+            _8: pcmae_cifar10_pc_pc_tvb_0.3_model_vit-b/2024-09-26_16-22-28
+        sampling_pc:
+          _None: 
+            _8: pcmae_cifar10_pcsampling_model_vit-b/2024-09-29_00-10-30 #pcmae_cifar10_pcsampling_model_vit-b/2024-09-26_14-22-12 (variance range) #pcmae_cifar10_pcsampling_model_vit-b/2024-09-21_09-57-11
+        sampling_ratio:
+          _None: 
+            _8: pcmae_cifar10_ratiosampling_model_vit-b/2024-09-21_09-57-11
+        sampling_pc_block:
+          _None:
+            _8: pcmae_cifar10_pcsampling_block_model_vit-b/2024-09-24_11-19-38
+    bloodmnist:
+      pixel:
+        pixel:
+          _60:
+            _8: mae_blood_pixel_0.6_model_vit-b/2024-09-21_09-57-41
+          _75:
+            _8: mae_blood_pixel_0.75_model_vit-b/2024-09-22_22-12-52
+        sampling:
+          _None:
+            _8: mae_sampling_blood_model_vit-b/2024-09-23_10-19-22 #mae_sampling_blood_model_vit-b/2024-09-21_09-57-28 (restricted range, 0.5-0.9)
+      pc:
+        bvt:
+          _85:  
+            _8: pcmae_blood_bvt_pc_tvb_0.85_vit-b/2024-09-22_09-38-23
+        pc:
+          _10:
+            _8: pcmae_blood_pc_pc_tvb_0.1_model_vit-b/2024-09-30_06-17-33
+          _20:
+            _8: pcmae_blood_pc_pc_tvb_0.2_model_vit-b/2024-09-30_06-25-22
+          _30:
+            _8: pcmae_blood_pc_pc_tvb_0.3_model_vit-b/2024-09-26_16-22-28 
+        sampling_pc:
+          _None:
+            _8: pcmae_blood_pcsampling_model_vit-b/2024-09-29_00-10-30 #pcmae_blood_pcsampling_model_vit-b/2024-09-26_14-22-23 #pcmae_blood_pcsampling_model_vit-b/2024-09-21_09-57-11
+        sampling_ratio:
+          _None: 
+            _8: pcmae_blood_ratiosampling_model_vit-b/2024-09-21_09-57-13
+        sampling_pc_block:
+          _None:
+            _8: pcmae_blood_pcsampling_block_model_vit-b/2024-09-24_11-19-38
+    dermamnist: 
+      pixel:
+        pixel:
+          _75:
+            _8: mae_derma_pixel_0.75_model_vit-b/2024-09-22_22-12-23
+          _80:
+            _8: mae_derma_pixel_0.8_model_vit-b/2024-09-21_09-57-40
+        sampling:
+          _None: 
+            _8: mae_sampling_derma_model_vit-b/2024-09-23_10-19-22 #mae_sampling_derma_model_vit-b/2024-09-21_09-56-42 (restricted range, 0.5-0.9)
+      pc:
+        bvt:
+          _90:
+            _8: pcmae_derma_tvb_pc_tvb_0.9_vit-b/2024-09-21_09-57-01
+        pc:
+          _5:
+            _8: pcmae_derma_pc_pc_tvb_0.05_model_vit-b/2024-09-29_00-10-22
+          _8:
+            _8: pcmae_derma_pc_pc_tvb_0.08_model_vit-b/2024-09-29_00-10-22
+          _10:
+            _8: pcmae_derma_pc_pc_tvb_0.1_model_vit-b/2024-09-29_00-10-22
+          _20:
+            _8: pcmae_derma_pc_pc_tvb_0.2_model_vit-b/2024-09-29_00-10-22
+        sampling_pc:
+          _None:
+            _8: pcmae_derma_pcsampling_model_vit-b/2024-09-29_05-55-13 #pcmae_derma_pcsampling_model_vit-b/2024-09-26_14-22-23 (variance range) #pcmae_derma_pcsampling_model_vit-b/2024-09-21_09-56-22
+        sampling_ratio:
+          _None:
+            _8: pcmae_derma_ratiosampling_model_vit-b/2024-09-21_09-56-22
+        sampling_pc_block:
+          _None:
+            _8: pcmae_derma_pcsampling_block_model_vit-b/2024-09-24_11-19-38
+    pathmnist:
+      pixel:
+        pixel:
+          _75:
+            _8: mae_path_pixel_0.75_model_vit-b/2024-09-22_22-12-23
+          _80:
+            _8: mae_path_pixel_0.8_model_vit-b/2024-09-21_09-57-41
+        sampling:
+          _None: 
+            _8: mae_sampling_path_model_vit-b/2024-09-25_19-30-39 # mae_sampling_path_model_vit-b/2024-09-21_09-56-42
+      pc:
+        bvt:
+          _60:
+            _8: pcmae_path_bvt_pc_tvb_0.6_vit-b/2024-09-21_09-56-59
+        sampling_pc:
+          _None: 
+            _8: pcmae_path_pcsampling_model_vit-b/2024-09-21_09-57-13
+        sampling_ratio:
+          _None: 
+            _8: pcmae_path_ratiosampling_model_vit-b/2024-09-21_09-57-13
+        sampling_pc_block:
+          _None:
+            _8: pcmae_path_pcsampling_block/2024-09-24_11-10-45

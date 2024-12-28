@@ -1,0 +1,51 @@
+# @package _global_
+
+transformation:
+  train:
+    _target_: torchvision.transforms.Compose
+    transforms: ${compose_train_transforms}
+  val:
+    _target_: torchvision.transforms.Compose
+    transforms: ${compose_val_transforms}
+
+transformation_train_list:
+  resize:
+    _target_: torchvision.transforms.RandomResizedCrop
+    size:
+      - ${data.height}
+      - ${data.width}
+    scale: [0.2,1.0]
+    interpolation: 3
+  flip:
+    _target_: torchvision.transforms.RandomHorizontalFlip
+  tensor:
+    _target_: torchvision.transforms.ToTensor
+  normalize: 
+    _target_: utils.Normalize
+    mean: ${data.mean}
+    std: ${data.std}
+
+transformation_val_list:
+  resize:
+    _target_: torchvision.transforms.Resize
+    size:
+      - ${data.height}
+      - ${data.width}
+    interpolation: 3
+  tensor:
+    _target_: torchvision.transforms.ToTensor
+  normalize: 
+    _target_: utils.Normalize
+    mean: ${data.mean}
+    std: ${data.std}
+    
+compose_train_transforms:
+  - ${transformation_train_list.resize}
+  - ${transformation_train_list.flip}
+  - ${transformation_train_list.tensor}
+  - ${transformation_train_list.normalize}
+
+compose_val_transforms:
+  - ${transformation_val_list.resize}
+  - ${transformation_val_list.tensor}
+  - ${transformation_val_list.normalize}

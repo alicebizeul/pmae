@@ -1,0 +1,9 @@
+# @package _global_
+
+project: pcmae
+
+trainer:
+  num_nodes: 1
+  devices: 1
+  accelerator: gpu
+  strategy: auto

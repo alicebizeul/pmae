@@ -1,0 +1,31 @@
+# @package _global_
+
+module:
+  _target_: model.vit_mae.ViTMAEForPreTraining
+
+model_name: "vit-t"
+
+pl_module:
+  _target_: model.module.ViTMAE
+  base_learning_rate: 1.5e-4
+  betas: [0.9, 0.95]
+  weight_decay: 0.05
+  optimizer_name: adamw_warmup
+  warmup: 40
+  eval_freq: 100
+  eval_type: ${data.eval_type}
+  eval_fn: ${data.eval_fn}
+  eval_logit_fn: ${data.eval_logit_fn}
+  learning_rate: ${compute_lr:${pl_module.base_learning_rate},${datamodule.batch_size}}
+
+module_config: 
+  _target_: transformers.ViTMAEConfig
+  hidden_size: 192
+  num_attention_head: 3
+  intermediate_size: 768
+  norm_pix_loss: False
+  attn_implementation: "eager"
+  mask_ratio: ${masking.pixel_ratio}
+  patch_size: ${data.patch_size}
+  image_size: ${data.resolution}
+

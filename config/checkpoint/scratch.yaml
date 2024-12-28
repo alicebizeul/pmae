@@ -1,0 +1,6 @@
+# @package _global_
+
+checkpoint:
+checkpoint_fn: 
+  _target_: torch.load
+  f: 

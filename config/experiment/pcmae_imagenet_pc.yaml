@@ -1,0 +1,8 @@
+# @package _global_
+
+defaults:
+  - override /dataset: imagenet
+  - override /model: vit-b
+  - override /masking: pc_pc
+  - override /transformations: mae
+

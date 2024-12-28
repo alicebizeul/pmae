@@ -1,0 +1,8 @@
+# @package _global_
+
+defaults:
+  - override /dataset: cifar10
+  - override /model: vit-t
+  - override /masking: pc_tvb
+  - override /transformations: mae
+

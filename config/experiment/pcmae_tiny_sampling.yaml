@@ -1,0 +1,13 @@
+# @package _global_
+
+defaults:
+  - override /dataset: tinyimagenet
+  - override /model: vit-t
+  - override /masking: pc_sampling
+  - override /transformations: mae
+
+trainer:
+  max_epochs: 800
+
+evaluator:
+  max_epochs: 100

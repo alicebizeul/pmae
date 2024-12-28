@@ -1,0 +1,8 @@
+# @package _global_
+
+defaults:
+  - override /dataset: pathmnist
+  - override /model: vit-t
+  - override /masking: pc_pc
+  - override /transformations: mae
+

@@ -1,0 +1,71 @@
+# @package _global_
+
+data:
+  name: imagenet
+  resolution: 224
+  channels: 3
+  height: ${data.resolution}
+  width: ${data.resolution}
+  patch_size: 16
+  batch_size: 512 # 256 for 40G, 512 for 80G
+  eval_fn: 
+    _target_: torch.nn.CrossEntropyLoss
+  eval_logit_fn:
+    _target_: torch.nn.Softmax
+    dim: -1
+  eval_type: multiclass
+  str_patch_size: ${convert_str:${data.patch_size}}
+  mean:
+    _target_: torch.tensor
+    data: 
+      _target_: numpy.load
+      file: /cluster/scratch/abizeul/imagenet_mean_reshaped.npy #[0.485, 0.456, 0.406]
+  std:
+    _target_: torch.tensor
+    data: 
+      _target_: numpy.load
+      file: /cluster/scratch/abizeul/imagenet_std_reshaped.npy  #[0.229, 0.224, 0.225]
+  classes: 1000
+
+datasets:
+  train:
+    _target_: torchvision.datasets.ImageFolder
+    root: ${base_data_home}/ILSVRC2012_img/train
+    transform: ${transformation.train}
+
+  val:
+    _target_: torchvision.datasets.ImageFolder
+    root: ${base_data_home}/ILSVRC2012_img/val/ILSVRC2012
+    transform: ${transformation.val}
+
+  test:
+    _target_: torchvision.datasets.ImageFolder
+    root: ${base_data_home}/ILSVRC2012_img/val/ILSVRC2012
+    transform: ${transformation.val}
+
+datamodule: 
+  _target_: dataset.dataloader.DataModule
+  batch_size: ${data.batch_size}
+  num_workers: 8
+  classes: ${data.classes}
+  channels: ${data.channels}
+  resolution: ${data.resolution}
+
+datamodule_eval:
+  _target_: dataset.dataloader.DataModule
+  batch_size: ${data.batch_size}
+  num_workers: ${datamodule.num_workers}
+  classes: ${data.classes}
+  channels: ${data.channels}
+  resolution: ${data.resolution}
+
+
+extradata:
+  pcamodule:
+    _target_ : numpy.load
+    # file: ${base_data_home}/tiny-imagenet-200/train/pc_matrix.npy
+    file: /cluster/scratch/abizeul/pc_matrix_ipca.npy
+  eigenratiomodule:
+    _target_: numpy.load
+    # file: ${base_data_home}/tiny-imagenet-200/train/eigenvalues_ratio.npy
+    file: /cluster/scratch/abizeul/eigenvalues_ratio_ipca.npy

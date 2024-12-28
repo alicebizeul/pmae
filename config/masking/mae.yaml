@@ -1,0 +1,9 @@
+# @package _global_
+
+masking:
+  type: pixel
+  strategy: pixel
+  pixel_ratio: 0.75
+  pc_ratio: 0.0
+  ratio:  ${decimal_2_percent:${masking.pixel_ratio}}
+  str_ratio: ${convert_str:${masking.ratio}}
