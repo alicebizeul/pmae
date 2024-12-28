@@ -12,16 +12,17 @@ PMAE introduces an alternative approach to pixel masking for visual representati
 
 ```
 .
-├── configs                   # directory in which all experiment '.yaml' configs are stored
 ├── assets                    # assets for the README file
+├── configs                   # directory in which all experiment '.yaml' configs are stored
 ├── scripts                   # bash scripts to launch training and evaluation
-├── tools                     # scripts to compute PCA prior to training
 ├── src                       # the package
 │   ├── plotting.py           #   plotting function to training tracking
 │   ├── utils.py              #   helper functions for init of models & opt/loading checkpoint
 │   ├── dataset               #   datasets, data loaders, ...
 │   └── model                 #   models, training loops, ...
-└── main.py                   # entrypoint for launch PMAE pretraining locally on your machine
+├── tools                     # scripts to compute PCA prior to training
+├── main.py                   # entrypoint for launch PMAE pretraining locally on your machine
+└── requirements.txt          # requirements file
 ```
 
 **Config files:**
