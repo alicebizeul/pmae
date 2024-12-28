@@ -50,7 +50,7 @@ Create a config file that suits your machine:
 Adjust the paths in ```myusername_mymachine.yaml``` to point to the directory you would like to use for storage of results and for fetching the data
 
 ## Launch Training
-To launch experiments, you can find training and evaluation scripts in  ```scripts```. The following modifications should be made to these script to ensure a smooth training on your local machine:
+To launch experiments, you can find training and evaluation scripts in  ```scripts```. The following modifications should be made to the ```train.sh``` script to ensure a smooth training on your local machine:
 
     USER_MACHINE="myusername_mymachine"  # the user which runs the experiment
     EXPERIMENT="pmae_tiny_pc"            # the experiment to run, defines the model, dataset and masking type
@@ -60,13 +60,14 @@ Please find the whole set of pre-defined experiment to chose from in [config/exp
 
 **Baselines:** To run the MAE baseline in place of PMAE, adjust ```EXPERIMENT``` to ```mae_tiny``` or any other experiment which starts by ```mae```. 
 
-**Random Masking:** To run PMAE with randomized masking ratios as presented in the [\[arXiv\]](https://alicebizeul.github.io/assets/pdf/mae.pdf), adjust ```EXPERIMENT``` to ```pmae_tiny_pcsampling``` or any other experiment which contains by ```pcsampling```. 
+**Random Masking:** To run PMAE with randomized masking ratios as presented in the [\[arXiv\]](https://alicebizeul.github.io/assets/pdf/mae.pdf), adjust ```EXPERIMENT``` to ```pmae_tiny_pcsampling``` or any other experiment which contains ```pcsampling```. 
 
 ## Launch Evaluation
-To evaluate a checkpoint, you can gain inspiration from ```./config/user/callen_euler.yaml``` where I stored my runs. Then the following command gives an overview of how to launch the evaluation
+To evaluate a checkpoint, the evaluation script for linear probe, MLP probe, k-nearest neighbors, and fine-tuning approaches can be found in the ```scripts``` directory. The following modifications should be made to the ```eval.sh``` script to ensure a smooth evaluation on your local machine:
 
-    EXPERIMENT="mae_clevr"
-    EPOCH=800
-    RUN_TAG="$EXPERIMENT_eval_$EPOCH"
-    python main.py user=callen_euler experiment=$DATASET trainer=eval checkpoint=pretrained checkpoint.epoch=$EPOCH run_tag=$RUN_TAG"
+    USER_MACHINE="myusername_mymachine"  # the user which runs the experiment
+    EXPERIMENT="pmae_tiny_pc"            # the experiment to run, defines the model, dataset and masking type
+    EPOCH=800                            # the epoch to be evaluated
+    MASK=0.2                             # the masking ratio to use, default: 0.2
 
+Additionally, ensure the path to the checkpoint you want to evaluate is correctly set in your [user configuration file](config/user/abizeul_euler.yaml). For reference, see config/user/abizeul_euler.yaml. The specified checkpoint (defined by its path and epoch) will then be evaluated.
