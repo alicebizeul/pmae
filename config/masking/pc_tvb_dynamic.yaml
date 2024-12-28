@@ -1,7 +1,0 @@
-# @package _global_
-
-masking:
-  type: pc
-  strategy: tvb_dynamic
-  pixel_ratio: 0.0
-  ratio:  ${decimal_2_percent:${masking.pixel_ratio}}

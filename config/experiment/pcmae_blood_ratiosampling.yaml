@@ -1,8 +1,0 @@
-# @package _global_
-
-defaults:
-  - override /dataset: bloodmnist
-  - override /model: vit-t
-  - override /masking: pc_ratiosampling
-  - override /transformations: mae
-

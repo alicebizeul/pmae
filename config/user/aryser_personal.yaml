@@ -1,4 +1,0 @@
-# @package _global_
-
-base_logs_home: /projects/mae/logs
-base_data_home: /datasets

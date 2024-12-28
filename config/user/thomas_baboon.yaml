@@ -1,4 +1,0 @@
-# @package _global_
-
-base_logs_home: /usr/scratch/projects/pcmae/experiments
-base_data_home: /usr/scratch/data
