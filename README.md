@@ -28,7 +28,7 @@ PMAE introduces an alternative approach to pixel masking for visual representati
 ```
 
 **Config files:**
-Note that all experiment parameters are specified in config files (as opposed to command-line-arguments). See the [configs/](configs/) directory for example config files.
+Note that all experiment parameters are specified in config files (as opposed to command-line-arguments). See the [config/](config/) directory for example config files.
 
 
 ## Installation 
@@ -52,9 +52,11 @@ Adjust the paths in ```myusername_mymachine.yaml``` to point to the directory yo
 ## Launch Training
 To launch experiments, you can find training and evaluation scripts in  ```scripts```. The following modifications should be made to these script to ensure a smooth training on your local machine:
 
-    - ```USER_MACHINE``` : refers the experimental setting defined in ```./config/experiment/```.
-    - ```EXPERIMENT```: refers the experimental setting defined in ```./config/experiment/```.
-    - ```DATASET```: refers the experimental setting defined in ```./config/experiment/```.
+    USER_MACHINE="myusername_mymachine"  # the user which runs the experiment
+    EXPERIMENT="pmae_tiny_pc"            # the experiment to run, defines the model, dataset and masking type
+    MASK=0.2                             # the masking ratio to use, default: 0.2
+
+**Baselines:** To run the MAE baseline in place of PMAE, adjust ```EXPERIMENT``` to ```mae_tiny```. 
 
 ## Launch Evaluation
 To evaluate a checkpoint, you can gain inspiration from ```./config/user/callen_euler.yaml``` where I stored my runs. Then the following command gives an overview of how to launch the evaluation
