@@ -1,6 +1,33 @@
-# Principled Masked Autoencoders
+# Principal Masked Autoencoders
 
-In this repository we explore more principled methods for image masking 
+Official PyTorch codebase for **P**rincipal **M**asked **A**uto-**E**ncoders (PMAE) presented in **Components Beat Patches: Eigenvector Masking for Visual Representation Learning** 
+[\[arXiv\]](https://alicebizeul.github.io/assets/pdf/mae.pdf).
+
+## Method
+PMAE introduces an alternative approach to pixel masking for visual representation learning by masking principal components instead of pixel patches. This repository builds on top of the Masked Auto-Encoder (MAE, [\[arXiv\]](https://arxiv.org/pdf/2111.06377)) a prominent baseline for Masked Image Modelling (MIM) and replaces the masking of patches of pixels by the masking of principal components.
+
+![pmae](https://github.com/alicebizeul/pmae/assets/diagram_lossA.pdf)
+
+## Code Structure
+
+```
+.
+├── configs                   # directory in which all experiment '.yaml' configs are stored
+├── src                       # the package
+│   ├── train.py              #   the I-JEPA training loop
+│   ├── helper.py             #   helper functions for init of models & opt/loading checkpoint
+│   ├── transforms.py         #   pre-train data transforms
+│   ├── datasets              #   datasets, data loaders, ...
+│   ├── models                #   model definitions
+│   ├── masks                 #   mask collators, masking utilities, ...
+│   └── utils                 #   shared utilities
+├── main_distributed.py       # entrypoint for launch distributed I-JEPA pretraining on SLURM cluster
+└── main.py                   # entrypoint for launch I-JEPA pretraining locally on your machine
+```
+
+**Config files:**
+Note that all experiment parameters are specified in config files (as opposed to command-line-arguments). See the [configs/](configs/) directory for example config files.
+
 
 ## Installation 
 
@@ -11,7 +38,7 @@ In your environment of choice, install the necessary requirements
 Alternatively, install individual packages as follows:
 
     !pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-    !pip install pandas numpy pillow scikit-learn scikit-image plotly kaleido matplotlib submitit hydra-core kornia pytorch-lightning imageio medmnist wandb transformers
+    !pip install pandas numpy pillow scikit-learn scikit-image plotly kaleido matplotlib submitit hydra-core pytorch-lightning imageio medmnist wandb transformers
 
 Create a config file that suits your machine:
 
