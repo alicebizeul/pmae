@@ -15,6 +15,8 @@ PMAE introduces an alternative approach to pixel masking for visual representati
 ├── assets                    # assets for the README file
 ├── configs                   # directory in which all experiment '.yaml' configs are stored
 ├── scripts                   # bash scripts to launch training and evaluation
+│   ├── train.sh              #   training script
+│   └── eval.sh               #   evaluation script
 ├── src                       # the package
 │   ├── plotting.py           #   plotting function to training tracking
 │   ├── utils.py              #   helper functions for init of models & opt/loading checkpoint
