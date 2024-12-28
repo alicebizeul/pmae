@@ -52,12 +52,11 @@ Adjust the paths in ```myusername_mymachine.yaml``` to point to the directory yo
 ## Launch Training
 To launch experiments, you can find training and evaluation scripts in  ```scripts```. The following modifications should be made to these script to ensure a smooth training on your local machine:
 
-    EXPERIMENT="mae_clevr"
-    python main.py user=myusername_mymachine experiment=$EXPERIMENT run_tag=$EXPERIMENT"
+    - ```USER_MACHINE``` : refers the experimental setting defined in ```./config/experiment/```.
+    - ```EXPERIMENT```: refers the experimental setting defined in ```./config/experiment/```.
+    - ```DATASET```: refers the experimental setting defined in ```./config/experiment/```.
 
-The ```EXPERIMENT``` variable refers the experimental setting defined in ```./config/experiment/```. 
-
-### Launch Evaluation
+## Launch Evaluation
 To evaluate a checkpoint, you can gain inspiration from ```./config/user/callen_euler.yaml``` where I stored my runs. Then the following command gives an overview of how to launch the evaluation
 
     EXPERIMENT="mae_clevr"
