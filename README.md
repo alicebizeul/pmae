@@ -6,7 +6,7 @@ Official PyTorch codebase for **P**rincipal **M**asked **A**uto-**E**ncoders (PM
 ## Method
 PMAE introduces an alternative approach to pixel masking for visual representation learning by masking principal components instead of pixel patches. This repository builds on top of the Masked Auto-Encoder (MAE, [\[arXiv\]](https://arxiv.org/pdf/2111.06377)) a prominent baseline for Masked Image Modelling (MIM) and replaces the masking of patches of pixels by the masking of principal components.
 
-![pmae](https://github.com/alicebizeul/pmae/blob/main/assets/diagram_lossA.pdf)
+![pmae](https://github.com/alicebizeul/pmae/blob/main/assets/diagram-20241228.png)
 
 ## Code Structure
 
