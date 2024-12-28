@@ -56,7 +56,11 @@ To launch experiments, you can find training and evaluation scripts in  ```scrip
     EXPERIMENT="pmae_tiny_pc"            # the experiment to run, defines the model, dataset and masking type
     MASK=0.2                             # the masking ratio to use, default: 0.2
 
-**Baselines:** To run the MAE baseline in place of PMAE, adjust ```EXPERIMENT``` to ```mae_tiny```. 
+Please find the whole set of pre-defined experiment to chose from in [config/experiment](config/experiment). 
+
+**Baselines:** To run the MAE baseline in place of PMAE, adjust ```EXPERIMENT``` to ```mae_tiny``` or any other experiment which starts by ```mae```. 
+
+**Random Masking:** To run PMAE with randomized masking ratios as presented in the [\[arXiv\]](https://alicebizeul.github.io/assets/pdf/mae.pdf), adjust ```EXPERIMENT``` to ```pmae_tiny_pcsampling``` or any other experiment which contains by ```pcsampling```. 
 
 ## Launch Evaluation
 To evaluate a checkpoint, you can gain inspiration from ```./config/user/callen_euler.yaml``` where I stored my runs. Then the following command gives an overview of how to launch the evaluation
