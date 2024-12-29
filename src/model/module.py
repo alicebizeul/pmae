@@ -1,25 +1,30 @@
-import pytorch_lightning as pl
-import torchmetrics
-from torch import Tensor
-import torch
-from torch import nn
-import torch.nn as nn
-from typing import Optional, Dict, List, Any
-import torch.nn.functional as F
-from torch.nn.parameter import Parameter
-# from model_zoo.scattering_network import Scattering2dResNet
-from torchvision.models import resnet18
-from torch import Tensor
-import wandb
-import os 
+"""
+Module Name: module.py
+Author: Alice Bizeul
+Ownership: ETH Zürich - ETH AI Center
+"""
+
+# Standard library imports
+import os
 import time
+from typing import Any, Dict, List, Optional
+
+# Third-party library imports
 import matplotlib.pyplot as plt
 import numpy as np
-from utils import save_reconstructed_images, save_attention_maps, save_attention_maps_batch
-from plotting import plot_loss, plot_performance
-# import kornia.augmentation as K_transformations
-# from kornia.constants import Resample
-from dataset.CLEVRCustomDataset import CLEVRCustomDataset
+import pytorch_lightning as pl
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torchmetrics
+from torch import Tensor
+from torch.nn.parameter import Parameter
+from torchvision.models import resnet18
+import wandb
+
+# Local imports
+from ..plotting import plot_loss, plot_performance
+from ..utils import save_attention_maps, save_attention_maps_batch, save_reconstructed_images
 
 class ViTMAE(pl.LightningModule):
 
@@ -56,26 +61,10 @@ class ViTMAE(pl.LightningModule):
 
         if self.masking.type == "pc":
             self.register_buffer("masking_fn_",torch.Tensor(self.datamodule.extra_data.pcamodule.T))
-            
-            # size = self.image_size
-            # if isinstance(size, int):
-            #     size = (size, size)
-            # self.random_resized_crop = K_transformations.RandomResizedCrop(
-            #     size=tuple(size),
-            #     scale=(0.2,1.0),
-            #     resample=Resample.BICUBIC.name
-            # )
-        
         elif self.masking.type == "random":
             self.register_buffer("masking_fn",nn.Linear())
-        elif self.masking.type == "segmentation":
-            patch_size = self.model.config.patch_size
-            self.mask_patch_pool = torch.nn.MaxPool2d(
-                (patch_size, patch_size), stride=(patch_size, patch_size)
-            )
 
         self.classifier = nn.Linear(model.config.hidden_size, self.num_classes)
-
         self.online_classifier_loss = eval_fn
         self.online_logit_fn= eval_logit_fn
         self.online_train_accuracy = torchmetrics.Accuracy(
@@ -93,82 +82,6 @@ class ViTMAE(pl.LightningModule):
 
     def forward(self, x):
         return self.model(self.transformation(x))
-
-    def get_current_masking_function(self, seg_mask):
-        if self.masking.strategy == 'complete':
-            seg_mask = seg_mask.max(dim=1).values.float()
-            patched_seg_mask = self.mask_patch_pool(seg_mask[:, 0]).flatten(1)
-        else:
-            # Patch each individual segmentation mask
-            patched_seg_mask = (
-                self.mask_patch_pool(seg_mask[:, :, 0].float()).flatten(2)
-            )
-            batch_size, n_masks, n_patches = patched_seg_mask.shape
-            # Get maximum number of patches out of any segmentation mask
-            max_patches_per_element = patched_seg_mask.sum(dim=-1).max().int()
-            # Create random order overlapping with the segmentation mask
-            segmentation_noise = torch.rand_like(patched_seg_mask) * patched_seg_mask
-            sorted_order = torch.argsort(segmentation_noise, dim=-1, descending=True).to(seg_mask.device)
-            # Randomly select patches from the segmentation mask to mask out
-            num_patches_per_mask = torch.randint(
-                low=0,
-                high=max_patches_per_element,
-                size=(batch_size, n_masks, int(self.datamodule.masking.pixel_ratio*max_patches_per_element)),
-            ).to(seg_mask.device)
-            # Gather indices to and set them to zero
-            index_to_mask = torch.gather(sorted_order, dim=-1, index=num_patches_per_mask).long()
-            patched_seg_mask = patched_seg_mask.scatter(
-                dim=-1, index=index_to_mask, value=0
-            )
-            if self.masking.strategy == "partial":
-                # Select random index to keep for each object
-                idx_to_keep = sorted_order[:, :, 0, None]
-                patched_seg_mask = patched_seg_mask.scatter(
-                    dim=-1, index=idx_to_keep, value=1
-                )
-
-            # Collapse segmentation mask to get a single mask per sample
-            patched_seg_mask = patched_seg_mask.max(dim=1).values
-
-        # Invert mask because we keep patches with 0
-        patched_seg_mask = 1 - patched_seg_mask
-        
-        # Get indices such that, per batch, the first indices correspond
-        # to '0', i.e., keep, and the last indices to '1', i.e., mask within the patched_seg_mask
-        ids_sort = torch.argsort(patched_seg_mask, dim=1).to(
-            patched_seg_mask.device
-        ) 
-        # Keep as many patches as the maximum selected by any mask
-        len_keep = patched_seg_mask.sum(dim=1).max().int()
-        ids_keep = ids_sort[:, :len_keep] 
-
-        # Set correct masking ratio
-        ratio = patched_seg_mask.sum()/(patched_seg_mask.shape[0]*patched_seg_mask.shape[1])
-        self.model.config.mask_ratio = ratio
-        self.model.vit.embeddings.config.mask_ratio=ratio
-
-        def masking_fn(sequence, noise=None):
-            sequence_unmasked = torch.gather(
-                sequence,
-                dim=1,
-                index=ids_keep.unsqueeze(-1).repeat(1, 1, sequence.shape[-1]),
-            )
-            # Restore original mask from sorted mask/sequence
-            ids_restore = torch.argsort(ids_sort, dim=1).to(patched_seg_mask.device)
-            return sequence_unmasked, patched_seg_mask, ids_restore
-        # Get all patch indices that are kept but should not be masked
-        batch_idx, patch_idx = torch.where(
-            torch.gather(patched_seg_mask, dim=1, index=ids_keep) == 1
-        )
-        # Construct a head mask to mask out cross attention with invalid patches
-        head_mask = torch.ones(seg_mask.shape[0], len_keep+1, len_keep+1)
-        head_mask[batch_idx, patch_idx+1, :] = 0
-        head_mask[batch_idx, :, patch_idx+1] = 0
-        head_mask = head_mask[None].repeat(self.model.vit.config.num_hidden_layers, 1, 1, 1)
-        head_mask = head_mask[:, :, None]
-        head_mask = head_mask.to(seg_mask.device)
-
-        return masking_fn, head_mask
 
     def shared_step(self, batch: Tensor, stage: str = "train", batch_idx: int = None):
         if stage == "train":
@@ -190,17 +103,8 @@ class ViTMAE(pl.LightningModule):
                     self.model.config.mask_ratio = pc_mask[0]
                     self.model.vit.embeddings.config.mask_ratio=pc_mask[0]
                 target = img
-            elif self.masking.type == "segmentation":
-                original_masking_fn = self.model.vit.embeddings.random_masking
-                self.model.vit.embeddings.random_masking, head_mask = (
-                    self.get_current_masking_function(pc_mask)
-                )
-                target = img
 
             outputs, cls = self.model(img,return_rep=False, head_mask=head_mask)
-            if self.masking.type == "segmentation":
-                self.model.vit.embeddings.random_masking = original_masking_fn
-
             reconstruction = self.model.unpatchify(outputs.logits)
             mask = outputs.mask.unsqueeze(-1).repeat(1, 1, self.model.config.patch_size**2 *3)  # (N, H*W, p*p*3)
             mask = self.model.unpatchify(mask)
@@ -262,9 +166,6 @@ class ViTMAE(pl.LightningModule):
 
         else:
             img, y = batch
-            # CLEVR
-            # if y.shape[1] > 1:
-            #     y = y[:,:1]
             cls, _ = self.model(img,return_rep=True)
             logits = self.classifier(cls.detach())
 
@@ -282,6 +183,7 @@ class ViTMAE(pl.LightningModule):
             if batch_idx == 0:
                 if self.current_epoch+1 not in list(self.performance.keys()): 
                     self.performance[self.current_epoch+1]=[]
+                    
             if len(y.squeeze().shape) > 1:
                 self.performance[self.current_epoch+1].append(sum(sum(1*((self.online_logit_fn(logits.squeeze())>0.5)==y.squeeze()))).item())  
             else: 

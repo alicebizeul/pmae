@@ -1,21 +1,31 @@
-import pytorch_lightning as pl
-import torchmetrics
-from torch import Tensor
-import torch
-import torch.nn as nn
-from typing import Optional, Dict, List, Any
-import torch.nn.functional as F
-from torch.nn.parameter import Parameter
-# from model_zoo.scattering_network import Scattering2dResNet
-from torchvision.models import resnet18
-from torch import Tensor
-import wandb
-import os 
+"""
+Module Name: module_fine.py
+Author: Alice Bizeul
+Ownership: ETH Zürich - ETH AI Center
+"""
+
+# Standard library imports
+import os
+import time
+from typing import Any, Dict, List, Optional
+import csv 
+
+# Third-party library imports
 import matplotlib.pyplot as plt
 import numpy as np
-from utils import save_reconstructed_images, save_attention_maps, save_attention_maps_batch
-from plotting import plot_loss, plot_performance
-import csv
+import pytorch_lightning as pl
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torchmetrics
+from torch import Tensor
+from torch.nn.parameter import Parameter
+from torchvision.models import resnet18
+import wandb
+
+# Local imports
+from ..plotting import plot_loss, plot_performance
+from ..utils import save_attention_maps, save_attention_maps_batch, save_reconstructed_images
 
 class ViTMAE_fine(pl.LightningModule):
 
@@ -78,8 +88,7 @@ class ViTMAE_fine(pl.LightningModule):
     def shared_step(self, batch: Tensor, stage: str = "train", batch_idx: int =None):
         if stage == "train":
             img, y, _ = batch
-            if len(y.shape)>1:
-                y = y[:,self.task]
+
             cls, _ = self.model(img,return_rep=True)
             logits = self.classifier(cls)
 
@@ -104,9 +113,6 @@ class ViTMAE_fine(pl.LightningModule):
 
         else:
             img, y = batch
-
-            if len(y.shape)>1:
-                y = y[:,self.task]
 
             cls, attentions = self.model(img,return_rep=True,output_attentions=True)
             logits = self.classifier(cls.detach())

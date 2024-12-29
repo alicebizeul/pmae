@@ -1,21 +1,31 @@
-import torch
-import torch.nn as nn
-import pytorch_lightning as pl
-from torch.utils.data import DataLoader, random_split, TensorDataset
-import torchmetrics
-from torch import Tensor
-from typing import Optional, Dict, List, Any
-import torch.nn.functional as F
-from torch.nn.parameter import Parameter
-from torchvision.models import resnet18
-from torch import Tensor
-import wandb
-import os 
+"""
+Module Name: module_knn.py
+Author: Alice Bizeul
+Ownership: ETH Zürich - ETH AI Center
+"""
+
+# Standard library imports
+import os
+import time
+from typing import Any, Dict, List, Optional
+import csv 
+
+# Third-party library imports
 import matplotlib.pyplot as plt
 import numpy as np
-from utils import save_reconstructed_images, save_attention_maps, save_attention_maps_batch
-from plotting import plot_loss, plot_performance
-import csv
+import pytorch_lightning as pl
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torchmetrics
+from torch import Tensor
+from torch.nn.parameter import Parameter
+from torchvision.models import resnet18
+import wandb
+
+# Local imports
+from ..plotting import plot_loss, plot_performance
+from ..utils import save_attention_maps, save_attention_maps_batch, save_reconstructed_images
 
 # Lightning Module definition
 class ViTMAE_knn(pl.LightningModule):

@@ -1,32 +1,37 @@
 """
-    Some portions of the code below were taken from prior codebases written by Mark Ibrahim and Randall Balestreiro
+Module Name: main.py
+Author: Alice Bizeul, Some portions of the code below were taken from prior codebases written by Mark Ibrahim and Randall Balestreiro
+Ownership: ETH Zürich - ETH AI Center
 """
-
-import os 
-import torchvision
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-import torch.optim.lr_scheduler as lr_scheduler
-from torch.utils.data import Dataset, DataLoader
-from PIL import Image
-import torch
-from torch.optim.optimizer import Optimizer
-from typing import Dict, Iterable, Optional, Callable, Tuple
-from torch import nn
-import numpy as np
-from torchvision.datasets import ImageFolder
-from pytorch_lightning.utilities import rank_zero_only
-from typing import List, Optional, Tuple, Dict
-import pytorch_lightning as pl
-from pytorch_lightning.loggers import WandbLogger
+# Standard library imports
 import logging
-from omegaconf import OmegaConf, DictConfig
-import yaml
-import submitit
-import git
-from hydra.utils import instantiate
+import os
 from pathlib import Path
+from typing import Callable, Dict, Iterable, List, Optional, Tuple
+import yaml
+
+# Third-party library imports
+import git
+import matplotlib.pyplot as plt
+import numpy as np
+import pytorch_lightning as pl
+import submitit
+import torch
+import torch.nn as nn
 import torch.nn.functional as F
+import torch.optim.lr_scheduler as lr_scheduler
+from omegaconf import DictConfig, OmegaConf
+from PIL import Image
+from sklearn.decomposition import PCA
+from torch.optim.optimizer import Optimizer
+from torch.utils.data import DataLoader, Dataset
+from torchvision import datasets, transforms
+from torchvision.datasets import ImageFolder
+from pytorch_lightning.loggers import WandbLogger
+from pytorch_lightning.utilities import rank_zero_only
+
+# Hydra imports
+from hydra.utils import instantiate
 
 def setup_wandb(
     config: DictConfig,
@@ -98,7 +103,6 @@ def print_config(
         resolve (bool, optional): Whether to resolve reference fields of DictConfig.
     """
     run_configs = OmegaConf.to_yaml(config, resolve=resolve)
-    print(run_configs)
     with open("run_configs.yaml", "w") as f:
         OmegaConf.save(config=config, f=f)
 
@@ -114,7 +118,6 @@ def log_job_info(log: logging.Logger):
         job_id = job_env.job_id
     except RuntimeError:
         pass
-    print("This is the job_id",job_id)
     log.info(f"job id {job_id}")
 
 
@@ -132,7 +135,6 @@ def find_existing_checkpoint(dirpath: str) -> Optional[str]:
 def load_checkpoints(model, config):
     if config.f is not None: 
         print("------------------ Trying to load checkpoint from",config.f) 
-        # model.load_state_dict(instantiate(config)["state_dict"],strict=False)
         try:
             model.load_state_dict(instantiate(config)["state_dict"],strict=False)
             attempt=1

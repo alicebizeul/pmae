@@ -1,19 +1,27 @@
-import pytorch_lightning as pl
+"""
+Module Name: dataloader.py
+Author: Alice Bizeul
+Ownership: ETH Zürich - ETH AI Center
+"""
+
+# Standard library imports
 import os
+import random
+import time
+from typing import Optional
+
+# Third-party library imports
+import numpy as np
+import pytorch_lightning as pl
 import torch
 import torch.nn as nn
-from torchvision import datasets
-from torch.utils.data import Dataset, DataLoader
-import torchvision
-import numpy as np
-from typing import Optional
-from torchvision import transforms
-from hydra.utils import instantiate
+from torch.utils.data import DataLoader, Dataset
+from torchvision import datasets, transforms
 from torchvision.transforms.functional import InterpolationMode
-import random
-import torchvision.datasets
-import time
-from dataset.CLEVRCustomDataset import CLEVRCustomDataset
+import torchvision
+
+# Hydra imports
+from hydra.utils import instantiate
 
 USER_NAME = os.environ.get("USER")
 
@@ -24,6 +32,7 @@ class PairedDataset(Dataset):
         self.masking = masking
         if self.masking.type == "pixel":
             self.pc_mask = 0
+
         elif self.masking.type == "pc":
             assert "eigenratiomodule" in list(extra_data.keys())
             assert "pcamodule" in list(extra_data.keys())
@@ -32,15 +41,7 @@ class PairedDataset(Dataset):
 
             self.find_threshold = lambda eigenvalues ,ratio: np.argmin(np.abs(np.cumsum(eigenvalues) - ratio))
             self.get_pcs_index  = np.arange
-
-            if self.masking.strategy == "tvb" or self.masking.strategy == "bvt": 
-                threshold = self.find_threshold(self.eigenvalues,self.masking.pc_ratio)
-                if self.masking.strategy == "bvt": self.pc_mask = self.get_pcs_index(threshold)
-                if self.masking.strategy == "tvb": self.pc_mask = self.get_pcs_index(threshold,self.eigenvalues.shape[0])
-            else: 
-                self.pc_mask = None
-        elif self.masking.type == "segmentation":
-            self.pc_mask = 0
+            self.pc_mask = None
 
     def __len__(self):
         return len(self.dataset)
@@ -58,11 +59,6 @@ class PairedDataset(Dataset):
             if self.masking.strategy == "sampling_pc":
                 index = torch.randperm(self.eigenvalues.shape[0]).numpy()
                 pc_ratio = np.random.randint(10,90,1)[0]/100
-                threshold = self.find_threshold(self.eigenvalues[index],pc_ratio)
-                pc_mask = index[:threshold]
-            elif self.masking.strategy == "sampling_rest_pc":
-                index = torch.randperm(self.eigenvalues.shape[0]).numpy()
-                pc_ratio = np.random.randint(10,20,1)[0]/100
                 threshold = self.find_threshold(self.eigenvalues[index],pc_ratio)
                 pc_mask = index[:threshold]
             elif self.masking.strategy == "pc":
@@ -120,9 +116,6 @@ class DataModule(pl.LightningDataModule):
 
         padded_pc_masks = [torch.nn.functional.pad(torch.tensor(pc_mask), (0, max_len - pc_mask.size),value=-1) for pc_mask in pc_masks]
         imgs = torch.stack(imgs)  # Assuming images are tensors and can be stacked directly
-        # if isinstance(labels,tuple):
-        #     labels = torch.stack(labels)
-        # else:
         labels = torch.tensor(labels)  # Convert labels to tensor
         padded_pc_masks = torch.stack(padded_pc_masks)  # Stack the padded pc_masks
 

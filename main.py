@@ -1,3 +1,9 @@
+"""
+Module Name: main.py
+Author: Alice Bizeul
+Ownership: ETH Zürich - ETH AI Center
+"""
+
 import hydra
 from hydra.utils import instantiate
 from hydra.core.hydra_config import HydraConfig
@@ -21,17 +27,16 @@ import matplotlib.pyplot as plt
 import csv
 import medmnist
 import numpy
-
-import model
-from model.module import ViTMAE
-from model.module_lin import ViTMAE_lin
-from model.module_knn import ViTMAE_knn
-from model.vit_mae import ViTMAEForPreTraining
-from dataset.dataloader import DataModule
-from dataset.CLEVRCustomDataset import CLEVRCustomDataset
 import transformers
 from transformers import ViTMAEConfig
-from utils import (
+
+import src.model
+from src.model.module import ViTMAE
+from src.model.module_lin import ViTMAE_lin
+from src.model.module_knn import ViTMAE_knn
+from src.model.vit_mae import ViTMAEForPreTraining
+from src.dataloader import DataModule
+from src.utils import (
     print_config,
     setup_wandb,
     get_git_hash,
@@ -95,7 +100,6 @@ def main(config: DictConfig) -> None:
 
     # Runing training (with eval on masked data to track behavior/convergence)
     trainer_configs = OmegaConf.to_container(config.trainer, resolve=True)
-    print(trainer_configs)
     trainer = pl.Trainer(
             **trainer_configs,
             logger=wandb_logger,

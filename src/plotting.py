@@ -1,11 +1,14 @@
+"""
+Module Name: main.py
+Author: Alice Bizeul
+Ownership: ETH Zürich - ETH AI Center
+"""
+
 import plotly.graph_objs as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
 import matplotlib.pyplot as plt
 import os
-
-# Example loss_tracking data
-# loss_tracking = [...]
 
 def plot_loss(loss,name_loss,save_dir,name_file=""):
     # Create a subplot with 1 row and 2 columns

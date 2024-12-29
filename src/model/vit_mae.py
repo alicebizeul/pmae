@@ -1,9 +1,13 @@
+"""
+Module Name: vit_mae.py
+Author: Alice Bizeul
+Ownership: ETH Zürich - ETH AI Center
+"""
 
 import torch
 from transformers import ViTMAEConfig, ViTMAEPreTrainedModel, ViTMAEModel
 from transformers.models.vit_mae.modeling_vit_mae import  ViTMAEDecoder, ViTMAEForPreTrainingOutput
 from typing import Optional, Set, Tuple, Union
-
 
 class ViTMAEForPreTraining(ViTMAEPreTrainedModel):
     def __init__(self, config):
