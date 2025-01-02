@@ -12,7 +12,7 @@ PMAE introduces an alternative approach to pixel masking for visual representati
 
 ```
 .
-├── assets                    # assets for the README file
+├── assets                    # assets for the README file 
 ├── configs                   # directory in which all experiment '.yaml' configs are stored
 ├── scripts                   # bash scripts to launch training and evaluation
 │   ├── train.sh              #   training script
@@ -49,6 +49,16 @@ Create a config file that suits your machine:
 
 Adjust the paths in ```myusername_mymachine.yaml``` to point to the directory you would like to use for storage of results and for fetching the data
 
+Make sure to either compute or download the necessary assets for the dataset you plan to use with PMAE. These include the mean and standard deviation for image normalization, as well as the eigenvalues and eigenvectors. For each dataset, these assets are available on Zenodo for which the link are listed below.ß
+
+- [CIFAR10](https://zenodo.org/records/14588944?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjY3ODJmNjAwLWM5YTYtNDhiNy1iNDEzLThlYjJjN2RkMzYyMiIsImRhdGEiOnt9LCJyYW5kb20iOiIyODAyNGE5NzU1MGZlNWY2Zjc3NGExMzU1MGUxNTc0ZSJ9.gCq9v8x2srkjjlusAw3zlMFZu31I6dziOrroBiNbRHQsOs7PZadhbClREgeTMRcQZ4DXKxh1sMASIyHcC34k3Q)
+- [TinyImageNet](https://zenodo.org/records/14589101?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Ijk0YzI2NGZhLTZhYTYtNDRiMC04NjIzLTk1MjQxNDc5Njg1YyIsImRhdGEiOnt9LCJyYW5kb20iOiI0OGM1MTlmNTk3MDJiMjk3M2YyNzBjMzc2ZTkzYThhMyJ9.LAlnzb4HCHkhd_CAUTkz9LWptyrnsfDLTzHuFKCXjRAGK77YWXyA3L412aB5r5U77WcltxsetpUGEQCjebOuHg)
+- [BloodMNIST](https://zenodo.org/records/14588621?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjljMzM2YjE3LTg3MTQtNDA2MS1hYzU5LTZhMWY2Y2IwNmE1OSIsImRhdGEiOnt9LCJyYW5kb20iOiJjY2MyYjVhM2ZmMzkxNmIzMWMwNzFlZmE0YTIwNjJmZiJ9.K9eA_KqJFMA5zfHU_lRUbQ-143Jj1M7IjB8nLGY6WShbqKC-g4E7_W96z7YWzf0wB25A-N6Bh0g8nqxxaPTKGA)
+- [DermaMNIST](https://zenodo.org/records/14588800?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImVkMDExNzU0LWJhODgtNDg0My1iODM0LWViMjg2ZDQ4NDk3MSIsImRhdGEiOnt9LCJyYW5kb20iOiIyZWIzMTY4NjYyNTA0MDRmNjkyNGI1NzI2ODliY2UzMiJ9.Dzkm-d0kba1FYwdW0h4oBav-qhGckbuirAF-Gre_JGJ6S0CTWDRESldO9AATRqwvCPNf7h3qa8i0KYnYZckCXw)
+- [PathMNIST](https://zenodo.org/records/14589091?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjdkMzg2NzAxLWMwMGQtNDcxMi05ODRmLTBiNjk5ZTlmNTMyZCIsImRhdGEiOnt9LCJyYW5kb20iOiI2MjdhOGI0ZGI0MjcxM2Q2ZDFjYWYyNjBlNmMxYmM2NCJ9.yD3jRzhdy-vt0PIN-bNcZWSR5Uxz4jDOPvqNE4UeQfKwq3n11gp-YdyVFL-Rv_2eMNbYc3o2euM8iMfQxcNK6A)
+
+Once files are downloaded and stored on your local machine, make sure to specify their path in the dataset's [config](config/dataset/) (```data.mean.data.file```,```data.std.data.file```,```extradata.pcamodule.file``` and ```extradata.eigenratiomodule.file```). See imagenet's [config](config/dataset/imagenet.yaml) as an example. 
+
 ## Launch Training
 To launch experiments, you can find training and evaluation scripts in  ```scripts```. The following modifications should be made to the ```train.sh``` script to ensure a smooth training on your local machine:
 
@@ -57,6 +67,8 @@ To launch experiments, you can find training and evaluation scripts in  ```scrip
     MASK=0.2                             # the masking ratio to use, default: 0.2
 
 Please find the whole set of pre-defined experiment to chose from in [config/experiment](config/experiment). 
+
+**Distributed Training:** For distributed training, please use the ```train_distributed.sh``` script instead and adjust the number of GPUs according to your own ressources. Note that our code uses Pytorch Lightning for distributed training.
 
 **Baselines:** To run the MAE baseline in place of PMAE, adjust ```EXPERIMENT``` to ```mae_tiny``` or any other experiment which starts by ```mae```. 
 
