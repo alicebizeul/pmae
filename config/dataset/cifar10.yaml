@@ -20,12 +20,12 @@ data:
     _target_: torch.tensor
     data: 
       _target_: numpy.load
-      file: ${datasets.train.root}/cifar-10-batches-py/mean_reshaped.npy
+      file: ${base_data_home}/cifar-10-batches-py/mean_reshaped.npy
   std: 
     _target_: torch.tensor
     data: 
       _target_: numpy.load
-      file: ${datasets.train.root}/cifar-10-batches-py/std_reshaped.npy
+      file: ${base_data_home}/cifar-10-batches-py/std_reshaped.npy
   classes: 10
   task: 1
 
@@ -52,7 +52,7 @@ datasets:
     transform: ${transformation.val}
 
 datamodule: 
-  _target_: dataset.dataloader.DataModule
+  _target_: src.dataloader.DataModule
   batch_size: ${data.batch_size}
   num_workers: 8
   classes: ${data.classes}
@@ -63,7 +63,7 @@ datamodule:
     - ${data.width}
 
 datamodule_eval:
-  _target_: dataset.dataloader.DataModule
+  _target_: src.dataloader.DataModule
   batch_size: ${data.batch_size}
   num_workers: ${datamodule.num_workers}
   classes: ${data.classes}

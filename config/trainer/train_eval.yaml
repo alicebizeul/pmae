@@ -7,3 +7,16 @@ evaluator:
   max_epochs: 100
 
 evaluated_epoch: ${trainer.max_epochs}
+
+pl_module_eval:
+  _target_: src.model.module_lin.ViTMAE_lin
+  base_learning_rate: 0.1
+  betas: 0.9
+  weight_decay: 0
+  optimizer_name: sgd
+  warmup: 10
+  learning_rate: ${compute_lr:${pl_module_eval.base_learning_rate},${datamodule_eval.batch_size}}
+  eval_type: ${data.eval_type}
+  eval_fn: ${data.eval_fn}
+  evaluated_epoch: ${trainer.max_epochs}
+

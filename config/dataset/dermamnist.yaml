@@ -55,7 +55,7 @@ datasets:
     transform: ${transformation.train}
 
 datamodule: 
-  _target_: dataset.dataloader.DataModule
+  _target_: src.dataloader.DataModule
   batch_size: ${data.batch_size}
   num_workers: 8
   classes: ${data.classes}
@@ -64,7 +64,7 @@ datamodule:
   name: ${data.name}
 
 datamodule_eval:
-  _target_: dataset.dataloader.DataModule
+  _target_: src.dataloader.DataModule
   batch_size: ${data.batch_size}
   num_workers: ${datamodule.num_workers}
   classes: ${data.classes}

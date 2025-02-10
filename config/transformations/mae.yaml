@@ -21,7 +21,7 @@ transformation_train_list:
   tensor:
     _target_: torchvision.transforms.ToTensor
   normalize: 
-    _target_: utils.Normalize
+    _target_: src.utils.Normalize
     mean: ${data.mean}
     std: ${data.std}
 
@@ -35,7 +35,7 @@ transformation_val_list:
   tensor:
     _target_: torchvision.transforms.ToTensor
   normalize: 
-    _target_: utils.Normalize
+    _target_: src.utils.Normalize
     mean: ${data.mean}
     std: ${data.std}
     

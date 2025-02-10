@@ -11,7 +11,7 @@ evaluator:
   max_epochs: 100
 
 pl_module_eval:
-  _target_: model.module_mlp.ViTMAE_mlp
+  _target_: src.model.module_mlp.ViTMAE_mlp
   base_learning_rate: 0.1
   betas: 0.9
   weight_decay: 0

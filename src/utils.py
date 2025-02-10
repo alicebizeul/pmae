@@ -25,6 +25,7 @@ from PIL import Image
 from sklearn.decomposition import PCA
 from torch.optim.optimizer import Optimizer
 from torch.utils.data import DataLoader, Dataset
+import torchvision
 from torchvision import datasets, transforms
 from torchvision.datasets import ImageFolder
 from pytorch_lightning.loggers import WandbLogger
