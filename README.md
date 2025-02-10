@@ -1,6 +1,6 @@
 # Principal Masked Autoencoders
 
-Official PyTorch codebase for **P**rincipal **M**asked **A**uto-**E**ncoders (PMAE) presented in **Components Beat Patches: Eigenvector Masking for Visual Representation Learning** 
+Official PyTorch codebase for **P**rincipal **M**asked **A**uto-**E**ncoders (PMAE) presented in **From Pixels to Components: Eigenvector Masking for Visual Representation Learning** 
 [\[arXiv\]](https://alicebizeul.github.io/assets/pdf/mae.pdf).
 
 ## Method
