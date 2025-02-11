@@ -63,9 +63,7 @@ datamodule_eval:
 extradata:
   pcamodule:
     _target_ : numpy.load
-    # file: ${base_data_home}/tiny-imagenet-200/train/pc_matrix.npy
-    file: /cluster/scratch/abizeul/pc_matrix_ipca.npy
+    file: ${base_data_home}/pc_matrix_pca.npy
   eigenratiomodule:
     _target_: numpy.load
-    # file: ${base_data_home}/tiny-imagenet-200/train/eigenvalues_ratio.npy
-    file: /cluster/scratch/abizeul/eigenvalues_ratio_ipca.npy
+    file: ${base_data_home}/eigenvalues_ratio_pca.npy

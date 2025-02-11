@@ -1,7 +1,7 @@
 # Principal Masked Autoencoders
 
 Official PyTorch codebase for **P**rincipal **M**asked **A**uto-**E**ncoders (PMAE) presented in **From Pixels to Components: Eigenvector Masking for Visual Representation Learning** 
-[\[arXiv\]](https://alicebizeul.github.io/assets/pdf/mae.pdf).
+[\[arXiv\]](http://arxiv.org/abs/2502.06314).
 
 ## Method
 PMAE introduces an alternative approach to pixel masking for visual representation learning by masking principal components instead of pixel patches. This repository builds on top of the Masked Auto-Encoder (MAE, [\[arXiv\]](https://arxiv.org/pdf/2111.06377)) a prominent baseline for Masked Image Modelling (MIM) and replaces the masking of patches of pixels by the masking of principal components.
@@ -67,7 +67,7 @@ To launch experiments, you can find training and evaluation scripts in  ```scrip
     EXPERIMENT="pmae_tiny_pc"            # the experiment to run, defines the model, dataset and masking type
     MASK=0.2                             # the masking ratio to use, default: 0.2
 
-Please find the whole set of pre-defined experiment to chose from in [config/experiment](config/experiment). 
+Please find the whole set of pre-defined experiment to chose from in [config/experiment](config/experiment). Note that ```train.sh``` does include a final evaluation of the representations using a linear probe.
 
 **Distributed Training:** For distributed training, please use the ```train_distributed.sh``` script instead and adjust the number of GPUs according to your own ressources. Note that our code uses Pytorch Lightning for distributed training.
 
