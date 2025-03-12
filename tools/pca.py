@@ -32,26 +32,19 @@ data_fn = torchvision.datasets.ImageFolder
 folder = "~/ILSVRC2012_img/train"
 
 transform = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),    
+    transforms.Resize(resolution),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225]),
 ])
 
 trainset = data_fn(root=folder, transform=transform)
-num_samples = len(trainset)
-subset_size = int(0.1 * num_samples)  # 40% of the dataset
-indices = torch.randperm(num_samples)[:subset_size]  # Randomly select indices
-subset = Subset(trainset, indices)
 
 # Create a DataLoader for the subset
-trainloader = torch.utils.data.DataLoader(subset, batch_size=len(trainset), shuffle=False)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=len(trainset), shuffle=False)
 data_iter = iter(trainloader)
 images_np, _ = next(data_iter)
 
 images_np = images_np.numpy()
-pca_dim=20000
-pca = PCA(n_components=pca_dim)  # You can adjust the number of components
+pca = PCA()  # You can adjust the number of components
 
 # Reshape the images to (num_samples, height * width * channels)
 num_samples = images_np.shape[0]
@@ -59,8 +52,8 @@ original_shape = images_np.shape
 images_np = images_np.reshape(num_samples, -1)
 
 # Standardize
-# mean, std   = np.mean(images_flat, axis=0), np.std(images_flat, axis=0)
-# images_flat = (images_flat - mean) / std
+mean, std   = np.mean(images_flat, axis=0), np.std(images_flat, axis=0)
+images_flat = (images_flat - mean) / std
 
 # Step 4: Perform PCA
 pca.fit(images_np)
