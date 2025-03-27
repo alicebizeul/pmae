@@ -30,18 +30,18 @@ class PairedDataset(Dataset):
 
         self.dataset = dataset
         self.masking = masking
-        if self.masking.type == "pixel":
-            self.pc_mask = 0
 
-        elif self.masking.type == "pc":
-            assert "eigenratiomodule" in list(extra_data.keys())
-            assert "pcamodule" in list(extra_data.keys())
+        self.is_pc_mask = self.masking.type == "pc"
 
-            self.eigenvalues = torch.Tensor(extra_data.eigenratiomodule)
-
+        if self.is_pc_mask:
+            assert "eigenratiomodule" in extra_data and "pcamodule" in extra_data
+            self.eigenvalues = np.array(extra_data['eigenratiomodule'])
+            self.cum_eigenvalues = np.cumsum(self.eigenvalues)
+            self.pc_mask = None
             self.find_threshold = lambda eigenvalues ,ratio: np.argmin(np.abs(np.cumsum(eigenvalues) - ratio))
             self.get_pcs_index  = np.arange
-            self.pc_mask = None
+        else:
+            self.pc_mask = 0
 
     def __len__(self):
         return len(self.dataset)
@@ -49,26 +49,27 @@ class PairedDataset(Dataset):
     def __getitem__(self, idx):
 
         # Load the images
-        img1, y = self.dataset[idx]
+        img, y = self.dataset[idx]
         pc_mask = self.pc_mask
 
-        if isinstance(y,list) and len(y)==2:
-            pc_mask = y[1]
-            y = y[0]
         if self.masking.type == "pc":
+
             if self.masking.strategy == "sampling_pc":
                 index = torch.randperm(self.eigenvalues.shape[0]).numpy()
-                pc_ratio = np.random.randint(10,90,1)[0]/100
+                pc_ratio = random.uniform(0.1, 0.9)
                 threshold = self.find_threshold(self.eigenvalues[index],pc_ratio)
                 pc_mask = index[:threshold]
+
             elif self.masking.strategy == "pc":
-                index = torch.randperm(self.eigenvalues.shape[0]).numpy()
+                index = np.random.permutation(self.eigenvalues.shape[0])
                 threshold = self.find_threshold(self.eigenvalues[index],self.masking.pc_ratio)
                 pc_mask = index[:threshold]
+                
         elif self.masking.type == "pixel":
             if self.masking.strategy == "sampling":
-                pc_mask = float(np.random.randint(10,90,1)[0]/100)            
-        return img1, y, pc_mask
+                pc_mask = random.uniform(0.1, 0.9)
+
+        return img, y, pc_mask
 
 class DataModule(pl.LightningDataModule):
     def __init__(
@@ -112,18 +113,15 @@ class DataModule(pl.LightningDataModule):
         """
 
         imgs, labels, pc_masks = zip(*batch)
-        max_len = max([pc_mask.size for pc_mask in pc_masks])
 
-        padded_pc_masks = [torch.nn.functional.pad(torch.tensor(pc_mask), (0, max_len - pc_mask.size),value=-1) for pc_mask in pc_masks]
-        imgs = torch.stack(imgs)  # Assuming images are tensors and can be stacked directly
-        labels = torch.tensor(labels)  # Convert labels to tensor
-        padded_pc_masks = torch.stack(padded_pc_masks)  # Stack the padded pc_masks
-
-        return imgs, labels, padded_pc_masks
+        imgs = torch.stack(imgs) 
+        labels = torch.tensor(labels) 
+        pc_masks = torch.tensor(pc_masks[0])
+        return imgs, labels, pc_masks
 
     def train_dataloader(self) -> DataLoader:
         training_loader = DataLoader(
-            self.train_dataset, batch_size=self.batch_size, shuffle=True, drop_last=False, num_workers=self.num_workers, collate_fn=self.collate_fn if (self.masking.type == "pc" and self.masking.strategy in ["sampling_pc","sampling_rest_pc","sampling_ratio","sampling_pc_block","pc"]) else None
+            self.train_dataset, batch_size=self.batch_size, shuffle=True, drop_last=False, num_workers=self.num_workers, collate_fn=self.collate_fn if (self.masking.type == "pc" and self.masking.strategy in ["sampling_pc","pc"]) else None
         )
         return training_loader
 

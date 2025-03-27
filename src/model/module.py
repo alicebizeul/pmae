@@ -88,25 +88,24 @@ class ViTMAE(pl.LightningModule):
             img, y, pc_mask = batch
 
             # mae training
-            head_mask = None # Masking sequence after self attention heads
             if self.masking.type == "pc":
-                pc_mask = pc_mask[0]
                 target  = (img.reshape([img.shape[0],-1]) @ self.masking_fn_[:,pc_mask])
 
-                if self.masking.strategy in ["sampling_pc","sampling_rest_pc","pc"]:
-                    indexes = torch.arange(self.masking_fn_.shape[1],device=self.device)
-                    pc_mask_input = indexes[~torch.isin(indexes,pc_mask[pc_mask!=-1])]
-                img     = (img.reshape([img.shape[0],-1]) @ self.masking_fn_[:,pc_mask_input] @ self.masking_fn_[:,pc_mask_input].T).reshape(img.shape)
+                if self.masking.strategy in ["sampling_pc","pc"]:
+                    indexes = self.indexes.to(self.device)
+                    pc_mask_input = indexes[~torch.isin(indexes,pc_mask)]
+
+                img     = ((img.reshape([img.shape[0],-1]) @ self.masking_fn_[:,pc_mask_input])@ self.masking_fn_[:,pc_mask_input].T).reshape(img.shape)
 
             elif self.masking.type == "pixel":
                 if self.masking.strategy == "sampling":
-                    self.model.config.mask_ratio = pc_mask[0]
-                    self.model.vit.embeddings.config.mask_ratio=pc_mask[0]
+                    self.model.config.mask_ratio = pc_mask
+                    self.model.vit.embeddings.config.mask_ratio=pc_mask
                 target = img
 
-            outputs, cls = self.model(img,return_rep=False, head_mask=head_mask)
+            outputs, cls = self.model(img,return_rep=False)
             reconstruction = self.model.unpatchify(outputs.logits)
-            mask = outputs.mask.unsqueeze(-1).repeat(1, 1, self.model.config.patch_size**2 *3)  # (N, H*W, p*p*3)
+            mask = outputs.mask.unsqueeze(-1).repeat(1, 1, self.model.config.patch_size**2 *3) 
             mask = self.model.unpatchify(mask)
 
             if self.masking.type == "pc":
@@ -114,20 +113,18 @@ class ViTMAE(pl.LightningModule):
                 outputs.mask = torch.zeros_like(mask.reshape([mask.shape[0],-1]),device=self.device)
 
             loss_mae = self.model.forward_loss(target,outputs.logits,outputs.mask,patchify=False if self.masking.type == "pc" else True)
-
-            self.log(
-                f"{stage}_mae_loss", 
-                loss_mae, 
-                prog_bar=True,
-                sync_dist=True,
-                on_step=False,
-                on_epoch=True
-                )
-
-            self.train_losses.append(loss_mae.item())
-            self.avg_train_losses.append(np.mean(self.train_losses))
-
+            
             if (self.current_epoch+1)%self.eval_freq==0 and batch_idx==0:
+                self.log(
+                    f"{stage}_mae_loss", 
+                    loss_mae, 
+                    prog_bar=True,
+                    sync_dist=False,
+                    on_step=True,
+                    on_epoch=False
+                    )
+                self.train_losses.append(loss_mae.item())
+                self.avg_train_losses.append(np.mean(self.train_losses))
                 plot_loss(self.avg_train_losses,name_loss="MSE",save_dir=self.save_dir,name_file="_train")
                 plot_loss(self.avg_online_losses,name_loss="X-Ent",save_dir=self.save_dir,name_file="_train_online_cls")
 
@@ -139,27 +136,27 @@ class ViTMAE(pl.LightningModule):
                 else:
                     save_reconstructed_images(img[:10], target[:10], reconstruction[:10], self.current_epoch+1, self.save_dir,"train")
 
-            del mask, reconstruction
 
             # online classifier
             logits_cls = self.classifier(cls.detach())
             loss_ce = self.online_classifier_loss(logits_cls.squeeze(),y.squeeze())
 
-            self.log(f"{stage}_classifier_loss", loss_ce, sync_dist=True)
-            self.online_losses.append(loss_ce.item())
-            self.avg_online_losses.append(np.mean(self.online_losses))
-
-            accuracy_metric = getattr(self, f"online_{stage}_accuracy")
-            accuracy_metric(self.online_logit_fn(logits_cls.squeeze()), y.squeeze())
-            self.log(
-                f"online_{stage}_accuracy",
-                accuracy_metric,
-                prog_bar=False,
-                sync_dist=True,
-            )
-            del logits_cls 
-
             if (self.current_epoch+1)%self.eval_freq==0 and batch_idx==0:
+                self.log(f"{stage}_classifier_loss", loss_ce, sync_dist=False, on_step=True, on_epoch=False)
+
+                accuracy_metric = getattr(self, f"online_{stage}_accuracy")
+                accuracy_metric(self.online_logit_fn(logits_cls.squeeze()), y.squeeze())
+                self.log(
+                    f"online_{stage}_accuracy",
+                    accuracy_metric,
+                    prog_bar=False,
+                    sync_dist=True,
+                )
+                del logits_cls 
+
+                self.online_losses.append(loss_ce.item())
+                self.avg_online_losses.append(np.mean(self.online_losses))
+
                 plot_loss(self.avg_online_losses,name_loss="X-Ent",save_dir=self.save_dir,name_file="_train_online_cls")
 
             return loss_mae + loss_ce
